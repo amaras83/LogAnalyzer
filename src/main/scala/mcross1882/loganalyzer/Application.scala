@@ -69,9 +69,6 @@ object Application {
      * @return Unit
      */
     def main(args: Array[String]) {
-        val analyzers = AnalyzerFactory.createFromXml
-        val parsers = ParserFactory.createFromXml(analyzers)
-        
         val reader = new Scanner(new File("sample.log"))
         try {
             while (reader.hasNext) {
