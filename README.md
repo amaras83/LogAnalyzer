@@ -34,16 +34,16 @@ and are located in `src/main/resources/`.
 
 ```xml
 <analyzers>
-    <analyzer category="Emergency" regex="Emergency: (.*)">
-        - %s: %d
+    <analyzer category="Emergency" regex="Emergency: (.*)" vars="message">
+        - $message
     </analyzer>
     
-    <analyzer category="FailedLogin" regex="login failed for (\w+@\w+.\w+)">
-        %s experienced a failed login %d times
+    <analyzer category="FailedLogin" regex="login (\w+) for (\w+@\w+.\w+)" vars="status|email">
+        $email experienced a $status login
     </analyzer>
     
     <analyzer category="DebuggingNoise" regex="Debug: (.*)">
-        - %s
+        Suppressed
     </analyzer>
 </analyzers>
 ```
@@ -74,7 +74,7 @@ that should be parsed as well as a list of parsers that should be used on the in
 <services>
     <service name="demo" title="Demo Diagnostics Report">
         <logfiles>
-            <file src="examples/sample.log" />
+            <file src="examples/sample.txt" />
         </logfiles>
         
         <parsers>
