@@ -9,6 +9,23 @@ Log analyzer and summary builder written in Scala built for JVM projects
 Log analyzer uses a set of analyzer, parsers, and services to parse logfiles into condensed summaries. To understand this better
 lets look at each piece individually..
 
+#### Condense log files
+
+Convert <a href="https://github.com/mcross1882/LogAnalyzer/tree/master/examples/sample.txt">bloated log files</a> into clean and concise summaries...
+
+```
+Demo Diagnostics Report
+=======================
+Emergency
+- Whoops something went wrong!: 2
+
+FailedLogin
+someone@test.com experienced a failed login: 1
+
+DebuggingNoise
+Suppressed: 25
+```
+
 #### Analyzers
 
 Analyzers are a set of rules that match a regex expression against a single line that is read in from the logfile. They also store simple meta
