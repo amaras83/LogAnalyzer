@@ -27,6 +27,16 @@ object ParserFactory {
      */
     private val ConfigFile = "/parsers.config"
     
+    /**
+     * Create a parser from a parser type
+     *
+     * @since  1.0
+     * @access public
+     * @param  String parserType the parser type
+     * @param  String name the parser name
+     * @param  List[Analyzer] the analyzers to use bind
+     * @return Parser
+     */
     def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = parserType match {
         case _ => new SimpleParser(name, analyzers)
     }

@@ -70,6 +70,15 @@ object ServiceFactory {
         buffer.toList
     }
     
+    /**
+     * Build a list of parsers from a whitelist of parser names
+     *
+     * @since  1.0
+     * @access protected
+     * @param  List[Parser] the available parsers
+     * @param  List[String] whitelisted parser names
+     * @return List[Parser] filtered list of parsers
+     */
     protected def buildParserList(parsers: List[Parser], names: List[String]): List[Parser] = 
         parsers.filter(x => names.contains(x.name))
 }
