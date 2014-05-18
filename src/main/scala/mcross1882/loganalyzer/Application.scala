@@ -7,10 +7,9 @@
  */
 package mcross1882.loganalyzer
 
-import java.io.File
-import java.util.Scanner
 import mcross1882.loganalyzer.analyzer.{Analyzer, AnalyzerFactory}
 import mcross1882.loganalyzer.parser.{Parser, ParserFactory}
+import mcross1882.loganalyzer.service.{Service, ServiceFactory}
 
 /**
  * Main Entry point
@@ -40,25 +39,33 @@ object Application {
     protected val _parsers = ParserFactory.createFromXml(_analyzers)
     
     /**
-     * Process a log line
+     * Services that will be used
      *
      * @since  1.0
      * @access protected
-     * @param  String line the line to be parsed
-     * @return Unit
+     * @var    List[Service]
      */
-    protected def processLine(line: String): Unit =
-        for (parser <- _parsers) parser.parseLine(line)
+    protected val _services = ServiceFactory.createFromXml(_parsers)
     
     /**
-     * Print the results of all the parsers
+     * Run all of the loaded services
      *
      * @since  1.0
      * @access protected
      * @return Unit
      */
-    protected def printAllParsers: Unit =
-        for (parser <- _parsers) parser.printResults
+    protected def runAllServices: Unit =
+        for (service <- _services) service.run
+    
+    /**
+     * Print the results of all the services
+     *
+     * @since  1.0
+     * @access protected
+     * @return Unit
+     */
+    protected def printAllServices: Unit =
+        for (service <- _services) service.print
     
     /**
      * Program start
@@ -69,14 +76,7 @@ object Application {
      * @return Unit
      */
     def main(args: Array[String]) {
-        val reader = new Scanner(new File("sample.log"))
-        try {
-            while (reader.hasNext) {
-                processLine(reader.nextLine)
-            }
-        } finally {
-            reader.close
-        }
-        printAllParsers
+        runAllServices
+        printAllServices
     }
 }

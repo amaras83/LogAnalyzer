@@ -18,8 +18,10 @@ import scala.collection.mutable.HashMap
  * @since  1.0
  * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
+ * @param  String n the name to reference this parser by
+ * @param  List[Analyzer] analyzers
  */
-class SimpleParser(analyzers: List[Analyzer]) extends Parser {
+class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
     /**
      * Temporary storage maintaining the number of occurrences
      * a given log pattern appears
@@ -51,4 +53,9 @@ class SimpleParser(analyzers: List[Analyzer]) extends Parser {
             }
         }
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    def name: String = n
 }

@@ -40,14 +40,16 @@ object ParserFactory {
         
         val buffer = new ListBuffer[Parser]
         val categoryBuffer = new ListBuffer[String]
+        var name: String = ""
         
         (root \ "parser").foreach{ parser =>
-            buffer.clear
+            categoryBuffer.clear
+            name = (parser \ "@name").text
             (parser \ "analyzer").foreach{ analyzer =>
                 categoryBuffer.append((analyzer \ "@category").text)
             }
             
-            buffer.append(new SimpleParser(buildAnalyzerList(analyzers, categoryBuffer.toList)))
+            buffer.append(new SimpleParser(name, buildAnalyzerList(analyzers, categoryBuffer.toList)))
         }
         
         buffer.toList
@@ -62,17 +64,6 @@ object ParserFactory {
      * @param  List[String] categories
      * @return List[Analyzer]
      */
-    protected def buildAnalyzerList(analyzers: List[Analyzer], categories: List[String]): List[Analyzer] = {
-        val buffer = new ListBuffer[Analyzer]
-        
-        for (category <- categories) {
-            analyzers.foreach{ analyzer =>
-                if (category equals analyzer.category) {
-                    buffer append analyzer
-                }
-            }
-        }
-        
-        buffer.toList
-    }
+    protected def buildAnalyzerList(analyzers: List[Analyzer], categories: List[String]): List[Analyzer] =
+        analyzers.filter(x => categories.contains(x.category))
 }

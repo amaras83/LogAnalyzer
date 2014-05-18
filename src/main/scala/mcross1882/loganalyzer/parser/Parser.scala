@@ -36,4 +36,13 @@ trait Parser {
      * @return Unit
      */
     def printResults: Unit
+    
+    /**
+     * Returns the name of the parser
+     *
+     * @since  1.0
+     * @access public
+     * @return String
+     */
+    def name: String
 }
