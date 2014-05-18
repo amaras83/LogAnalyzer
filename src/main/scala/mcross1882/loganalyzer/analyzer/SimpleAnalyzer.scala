@@ -57,7 +57,7 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
             val extracted = message._1
             val count = message._2
             
-            result += msg.format(extracted, count)
+            result += msg.format(extracted, count) + "\n"
         }
         result
     }
