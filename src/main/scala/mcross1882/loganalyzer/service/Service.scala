@@ -43,7 +43,10 @@ class Service(name: String, title: String, files: List[String], parsers: List[Pa
      * @access public
      * @return Unit
      */
-    def print: Unit = for (parser <- parsers) parser.printResults
+    def print: Unit = {
+        println("%s\n%s".format(title, "=" * title.length))
+        for (parser <- parsers) parser.printResults
+    }
     
     /**
      * Reads a file and loops through it line-by-line feeding
