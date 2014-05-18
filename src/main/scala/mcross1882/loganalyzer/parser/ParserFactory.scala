@@ -26,6 +26,10 @@ object ParserFactory {
      * @var    String
      */
     private val ConfigFile = "/parsers.config"
+    
+    def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = parserType match {
+        case _ => new SimpleParser(name, analyzers)
+    }
 
     /**
      * Creates a list of parsers from an XML file
@@ -41,15 +45,19 @@ object ParserFactory {
         val buffer = new ListBuffer[Parser]
         val categoryBuffer = new ListBuffer[String]
         var name: String = ""
+        var parserType: String = ""
         
         (root \ "parser").foreach{ parser =>
             categoryBuffer.clear
+            
             name = (parser \ "@name").text
+            parserType = (parser \ "@type").text
+            
             (parser \ "analyzer").foreach{ analyzer =>
                 categoryBuffer.append((analyzer \ "@category").text)
             }
             
-            buffer.append(new SimpleParser(name, buildAnalyzerList(analyzers, categoryBuffer.toList)))
+            buffer.append(createFromName(parserType, name, buildAnalyzerList(analyzers, categoryBuffer.toList)))
         }
         
         buffer.toList

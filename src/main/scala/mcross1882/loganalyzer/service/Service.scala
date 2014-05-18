@@ -65,7 +65,7 @@ class Service(name: String, title: String, files: List[String], parsers: List[Pa
                 processLine(reader.nextLine)
             }
         } catch {
-            case e: Exception => println(f"An error occurred while reading $filename%s.")
+            case e: Exception => println("An error occurred while reading %s. (%s)".format(filename, e.getMessage))
         } finally {
             if (null != reader) {
                 reader.close

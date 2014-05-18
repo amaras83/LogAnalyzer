@@ -35,12 +35,21 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
     /**
      * {@inheritdoc}
      */
-    def isMatch(line: String): Boolean = pt findFirstIn line match {
-        case Some(pt(text)) => {
-            _messages.put(text, _messages.getOrElse(text, 0) + 1)
-            true
+    def isMatch(line: String): Boolean = {
+        var tempLine: String = ""
+        
+        pt findFirstMatchIn line match {
+            case Some(text) => {
+                tempLine = msg
+                for (name <- text.groupNames if !name.isEmpty && tempLine.contains("$" + name)) {
+                    tempLine = tempLine.replace("$" + name, text.group(name))
+                }
+                
+                _messages.put(tempLine, _messages.getOrElse(tempLine, 0) + 1)
+                true
+            }
+            case None => false
         }
-        case None => false
     }
     
     /**
@@ -56,8 +65,8 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
         _messages.foreach{ message =>
             val extracted = message._1
             val count = message._2
-            
-            result += msg.format(extracted, count) + "\n"
+       
+            result += f"$extracted%s: $count%s\n"
         }
         result
     }
