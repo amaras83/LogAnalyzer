@@ -8,6 +8,7 @@
 package mcross1882.loganalyzer.analyzer
 
 import scala.collection.mutable.ListBuffer
+import scala.util.matching.Regex
 import scala.xml.XML
 
 /**
@@ -42,8 +43,9 @@ object AnalyzerFactory {
             val category = (analyzer \ "@category").text
             val regex = (analyzer \ "@regex").text
             val output = analyzer.text.trim
+            val args = (analyzer \ "@vars").text.split('|')
             
-            buffer.append(new SimpleAnalyzer(category, regex.r, output))
+            buffer.append(new SimpleAnalyzer(category, new Regex(regex, args: _*), output))
         }
         
         buffer.toList
