@@ -11,17 +11,29 @@ import org.scalatest._
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.SimpleParser
 import mcross1882.loganalyzer.service.{Service, ServiceFactory}
+import scala.util.matching.Regex
 
 class ServiceSpec extends FlatSpec with Matchers {
 
     "run" should "iterate through the file list parsing each one iteratively" in {
         val service = buildService
-        service.run
+        service.run(List.empty[String])
     }
     
     "print" should "iterate through each parser and print its result" in {
         val service = buildService
-        service.run
+        service.run(List.empty[String])
+        service.print
+    }
+    
+    it should "iterate only on the dates provided in the dates parameter" in {
+        val service = buildService
+        service.run(List("2014-05-01"))
+        service.print
+    }
+    
+    it should "print empty results if the service was not run" in {
+        val service = buildService
         service.print
     }
     
@@ -33,6 +45,6 @@ class ServiceSpec extends FlatSpec with Matchers {
     )
     
     protected def buildAnalyzers = List(
-        new SimpleAnalyzer("sample_test", """some regex""".r, "the output message")
+        new SimpleAnalyzer("timestamp", new Regex("""\[(\d\d\d\d-\d\d-\d\d)""", "timestamp"), "$timestamp")
     )
 }
