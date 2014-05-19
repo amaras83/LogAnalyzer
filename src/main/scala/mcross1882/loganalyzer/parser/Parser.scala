@@ -21,10 +21,11 @@ trait Parser {
      * Parse a given log line
      *
      * @since  1.0
-     * @param  String line
+     * @param  line the line to parse
+     * @param  dates the dates to filter on (if they exist in the line)
      * @return Unit
      */
-    def parseLine(line: String): Unit
+    def parseLine(line: String, dates: List[String]): Unit
     
     /**
      * Print the aggregated log results

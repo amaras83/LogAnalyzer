@@ -29,9 +29,10 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * on the input provided by the logfiles
      *
      * @since  1.0
+     * @param  dates the dates to filter on
      * @return Unit
      */
-    def run: Unit = for (filename <- files) readFile(filename)
+    def run(dates: List[String]): Unit = for (filename <- files) readFile(filename, dates)
     
     /**
      * Print all the results from the parsers
@@ -50,11 +51,14 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      *
      * @since  1.0
      * @param  filename the file to parse
+     * @param  dates a list of dates to filter on
      * @return Unit
      */
-    protected def readFile(filename: String): Unit = {
+    protected def readFile(filename: String, dates: List[String]): Unit = {
         try {
-            Source.fromFile(filename).getLines.foreach(processLine)
+            Source.fromFile(filename).getLines.foreach{ line =>
+                processLine(line, dates)
+            }
         } catch {
             case e: Exception => println("An error occurred while reading %s. (%s)".format(filename, e.getMessage))
         }
@@ -65,8 +69,9 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      *
      * @since  1.0
      * @param  line the input line
+     * @param  dates the dates to filter on
      * @return Unit
      */
-    protected def processLine(line: String): Unit = 
-        for (parser <- parsers) parser.parseLine(line)
+    protected def processLine(line: String, dates: List[String]): Unit = 
+        for (parser <- parsers) parser.parseLine(line, dates)
 }

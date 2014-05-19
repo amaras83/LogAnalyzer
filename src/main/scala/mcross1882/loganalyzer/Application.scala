@@ -20,11 +20,11 @@ object Application {
      * Program start
      *
      * @since  1.0
-     * @param  Array[String] args the program arguments
+     * @param  args the program arguments
      * @return Unit
      */
     def main(args: Array[String]) {
-        if (args.length < 1) {
+        if (args.length < 2) {
             return help
         }
         
@@ -33,7 +33,7 @@ object Application {
             
             val services = loader.loadServicesChain(args(0))
             
-            for (service <- services) service.run
+            for (service <- services) service.run(args(1).split(',').toList)
             
             for (service <- services) service.print
         } catch {
