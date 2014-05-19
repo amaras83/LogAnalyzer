@@ -24,7 +24,7 @@ import scala.xml.XML
  * @param  List[String] files a list of logfiles to watch
  * @param  List[Parser] the parsers that should be used on the logfiles
  */
-class Service(name: String, title: String, files: List[String], parsers: List[Parser]) {
+case class Service(name: String, title: String, files: List[String], parsers: List[Parser]) {
     /**
      * Run will loop through all the logfiles and run the parsers
      * on the input provided by the logfiles
