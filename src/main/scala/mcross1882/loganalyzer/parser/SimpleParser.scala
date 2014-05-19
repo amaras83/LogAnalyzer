@@ -47,9 +47,15 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * {@inheritdoc}
      */
     def printResults: Unit = {
-        for (analyzer <- analyzers) {
+        var previousCategory: String = ""
+        for (analyzer <- analyzers.sortBy(_.category)) {
+            if (!previousCategory.equals(analyzer.category)) {
+                println("\n%s".format(analyzer.category))
+                previousCategory = analyzer.category
+            }
+            
             if (_records.contains(analyzer.category)) {
-                println("%s\n%s".format(analyzer.category, analyzer.message, analyzer.hits))
+                print("%s".format(analyzer.message))
             }
         }
     }

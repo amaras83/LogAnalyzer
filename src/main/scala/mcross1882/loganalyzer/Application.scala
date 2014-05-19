@@ -26,12 +26,29 @@ object Application {
      * @return Unit
      */
     def main(args: Array[String]) {
-        val loader = new AutoLoader("conf\\dist")
+        if (args.length < 1) {
+            return help
+        }
         
-        val services = loader.loadServicesChain("demo")
-        
-        for (service <- services) service.run
-        
-        for (service <- services) service.print
+        try {
+            val loader = new AutoLoader("conf\\dist")
+            
+            val services = loader.loadServicesChain(args(0))
+            
+            for (service <- services) service.run
+            
+            for (service <- services) service.print
+        } catch {
+            case e: Exception => println("Error: %s".format(e.getMessage))
+        }
     }
+    
+    /**
+     * Program help dialog
+     *
+     * @since  1.0
+     * @access protected
+     * @return Unit
+     */
+    protected def help: Unit = println("loganalyzer [options] [service]")
 }
