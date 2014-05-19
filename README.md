@@ -16,13 +16,17 @@ Convert <a href="https://github.com/mcross1882/LogAnalyzer/tree/master/examples/
 ```
 Demo Diagnostics Report
 =======================
+Date Range
+Parsing records that occurred on 2014-05-01: 12
+Parsing records that occurred on 2014-05-02: 16
+
 Emergency
 - Whoops something went wrong!: 2
 
-FailedLogin
+Failed Logins
 someone@test.com experienced a failed login: 1
 
-DebuggingNoise
+Debugging Noise
 Suppressed: 25
 ```
 
@@ -34,15 +38,19 @@ and are located in `conf/dist/analyzers`.
 
 ```xml
 <analyzers>
+    <analyzer category="Date Range" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
+        Parsing records that occurred on $timestamp
+    </analyzer>
+    
     <analyzer category="Emergency" regex="Emergency: (.*)" vars="message">
         - $message
     </analyzer>
     
-    <analyzer category="FailedLogin" regex="login (\w+) for (\w+@\w+.\w+)" vars="status|email">
+    <analyzer category="Failed Logins" regex="login (\w+) for (\w+@\w+.\w+)" vars="status|email">
         $email experienced a $status login
     </analyzer>
     
-    <analyzer category="DebuggingNoise" regex="Debug: (.*)">
+    <analyzer category="Debugging Noise" regex="Debug: (.*)">
         Suppressed
     </analyzer>
 </analyzers>
@@ -57,9 +65,10 @@ input files.
 ```xml
 <parsers>
     <parser name="DemoParser" type="SimpleParser">
+        <analyzer category="Date Range" />
         <analyzer category="Emergency" />
-        <analyzer category="FailedLogin" />
-        <analyzer category="DebuggingNoise" />
+        <analyzer category="Failed Logins" />
+        <analyzer category="Debugging Noise" />
     </parser>
 </parsers>
 ```

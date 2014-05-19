@@ -20,11 +20,12 @@ class AnalyzerFactorySpec extends FlatSpec with Matchers {
     }
     
     "createFromXML(...)" should "return a list of analyzers from an external XML file" in {
-        val analyzers = AnalyzerFactory.createFromXml("conf/dist/analyzers/demo.config")
+        val analyzers = AnalyzerFactory.createFromXml("src/test/resources/analyzers.config")
         
-        analyzers.length should be(3)
-        analyzers(0).category should be("Emergency")
-        analyzers(1).category should be("FailedLogin")
-        analyzers(2).category should be("DebuggingNoise")
+        analyzers.length should be(4)
+        analyzers(0).category should be("Date Range")
+        analyzers(1).category should be("Emergency")
+        analyzers(2).category should be("Failed Logins")
+        analyzers(3).category should be("Debugging Noise")
     }
 }
