@@ -13,7 +13,6 @@ package mcross1882.loganalyzer.analyzer
  * for the tokens they match against
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 trait Analyzer {
@@ -23,7 +22,6 @@ trait Analyzer {
      * the method will return true
      *
      * @since  1.0
-     * @access public
      * @param  String line
      * @return Boolean
      */
@@ -33,7 +31,6 @@ trait Analyzer {
      * Returns the category name for this analyzer
      *
      * @since  1.0
-     * @access public
      * @return String
      */
     def category: String
@@ -42,7 +39,6 @@ trait Analyzer {
      * Returns a "pretty message" for this analyzer
      *
      * @since  1.0
-     * @access public
      * @return String
      */
     def message: String
@@ -51,7 +47,6 @@ trait Analyzer {
      * Returns the number of hits this analyzer received
      *
      * @since  1.0
-     * @access public
      * @return Int
      */
     def hits: Int

@@ -18,11 +18,10 @@ import scala.xml.XML
  * that it requires
  *
  * @since  1.0
- * @access public
- * @param  String name the reference name for this service
- * @param  String title the title to display when rendering to stdout
- * @param  List[String] files a list of logfiles to watch
- * @param  List[Parser] the parsers that should be used on the logfiles
+ * @param  name the reference name for this service
+ * @param  title the title to display when rendering to stdout
+ * @param  files a list of logfiles to watch
+ * @param  the parsers that should be used on the logfiles
  */
 case class Service(name: String, title: String, files: List[String], parsers: List[Parser]) {
     /**
@@ -30,7 +29,6 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * on the input provided by the logfiles
      *
      * @since  1.0
-     * @access public
      * @return Unit
      */
     def run: Unit = for (filename <- files) readFile(filename)
@@ -39,7 +37,6 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * Print all the results from the parsers
      *
      * @since  1.0
-     * @access public
      * @return Unit
      */
     def print: Unit = {
@@ -52,8 +49,7 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * it to all of the registered parsers
      *
      * @since  1.0
-     * @access protected
-     * @param  String filename the file to parse
+     * @param  filename the file to parse
      * @return Unit
      */
     protected def readFile(filename: String): Unit = {
@@ -68,8 +64,7 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * Feeds a single line to all of the parsers
      *
      * @since  1.0
-     * @access protected
-     * @param  String line the input line
+     * @param  line the input line
      * @return Unit
      */
     protected def processLine(line: String): Unit = 

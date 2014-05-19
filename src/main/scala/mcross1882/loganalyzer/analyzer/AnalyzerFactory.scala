@@ -16,7 +16,6 @@ import scala.xml.XML
  * analyzers from a external configuration file
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 object AnalyzerFactory {
@@ -24,11 +23,10 @@ object AnalyzerFactory {
      * Create an analyzer from a string name
      *
      * @since  1.0
-     * @access public
-     * @param  String anType the analyzer type
-     * @param  String category the analyzer category
-     * @param  Regex pattern the pattern to match against the log line
-     * @param  String message the output message
+     * @param  anType the analyzer type
+     * @param  category the analyzer category
+     * @param  pattern the pattern to match against the log line
+     * @param  message the output message
      * @return Analyzer
      */
     def createFromName(anType: String, category: String, pattern: Regex, message: String): Analyzer = {
@@ -41,8 +39,7 @@ object AnalyzerFactory {
      * Creates a list of analyzers from an XML file
      *
      * @since  1.0
-     * @access public
-     * @param  String filename the xml file to load
+     * @param  filename the xml file to load
      * @return List[Analyzer]
      */
     def createFromXml(filename: String): List[Analyzer] = {

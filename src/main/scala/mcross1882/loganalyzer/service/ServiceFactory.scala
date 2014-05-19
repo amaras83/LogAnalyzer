@@ -17,7 +17,6 @@ import scala.xml.XML
  * from an external configuration file
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 object ServiceFactory {
@@ -25,7 +24,6 @@ object ServiceFactory {
      * Creates a list of parsers from an XML file
      *
      * @since  1.0
-     * @access public
      * @param  String filename the xml file to load
      * @param  List[Parsers] the predefined parsers to use when building a service
      * @return List[Service]
@@ -68,7 +66,6 @@ object ServiceFactory {
      * Build a list of parsers from a whitelist of parser names
      *
      * @since  1.0
-     * @access protected
      * @param  List[Parser] the available parsers
      * @param  List[String] whitelisted parser names
      * @return List[Parser] filtered list of parsers

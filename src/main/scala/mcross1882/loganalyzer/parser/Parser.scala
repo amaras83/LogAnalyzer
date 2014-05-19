@@ -14,7 +14,6 @@ package mcross1882.loganalyzer.parser
  * any output and stats to stdout
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 trait Parser {
@@ -22,7 +21,6 @@ trait Parser {
      * Parse a given log line
      *
      * @since  1.0
-     * @access public
      * @param  String line
      * @return Unit
      */
@@ -32,7 +30,6 @@ trait Parser {
      * Print the aggregated log results
      *
      * @since  1.0
-     * @access public
      * @return Unit
      */
     def printResults: Unit
@@ -41,7 +38,6 @@ trait Parser {
      * Returns the name of the parser
      *
      * @since  1.0
-     * @access public
      * @return String
      */
     def name: String

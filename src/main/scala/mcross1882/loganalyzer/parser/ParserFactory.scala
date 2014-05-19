@@ -16,7 +16,6 @@ import scala.xml.XML
  * from an external configuration file
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 object ParserFactory {
@@ -24,10 +23,9 @@ object ParserFactory {
      * Create a parser from a parser type
      *
      * @since  1.0
-     * @access public
-     * @param  String parserType the parser type
-     * @param  String name the parser name
-     * @param  List[Analyzer] the analyzers to use bind
+     * @param  parserType the parser type
+     * @param  name the parser name
+     * @param  analyzers to use bind
      * @return Parser
      */
     def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = parserType match {
@@ -38,9 +36,8 @@ object ParserFactory {
      * Creates a list of parsers from an XML file
      *
      * @since  1.0
-     * @access public
-     * @param  String filename the xml file to load
-     * @param  List[Analyzer] the predefined analyzers to use when building a parser
+     * @param  filename the xml file to load
+     * @param  analyzers the predefined analyzers to use when building a parser
      * @return List[Parser]
      */
     def createFromXml(filename: String, analyzers: List[Analyzer]): List[Parser] = {
@@ -71,9 +68,8 @@ object ParserFactory {
      * Build a list of analyzers given a list of categories
      *
      * @since  1.0
-     * @access protected
-     * @param  List[Analyzer] analyzers
-     * @param  List[String] categories
+     * @param  analyzers
+     * @param  categories
      * @return List[Analyzer]
      */
     protected def buildAnalyzerList(analyzers: List[Analyzer], categories: List[String]): List[Analyzer] =

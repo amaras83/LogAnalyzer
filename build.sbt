@@ -15,9 +15,12 @@ scalaVersion := "2.10.3"
 
 organization := "mcross1882.loganalyzer"
 
+packageArchetype.java_application
+
 libraryDependencies ++= Seq(
    "org.specs2" %% "specs2" % "2.3.4" % "test",
-   "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+   "org.scalatest" % "scalatest_2.10" % "2.0" % "test",
+   "joda-time" % "joda-time" % "2.0"
 )
 
 // if you have more than one main method, you can specify which is used when typing 'run' in sbt

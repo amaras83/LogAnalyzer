@@ -16,7 +16,6 @@ import scala.collection.mutable.HashMap
  * for setting it up
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  * @param  String n the name to reference this parser by
  * @param  List[Analyzer] analyzers
@@ -27,8 +26,6 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * a given log pattern appears
      *
      * @since  1.0
-     * @access protected
-     * @var    HashMap[String,Int]
      */
     protected val _records = new HashMap[String,Int]
 

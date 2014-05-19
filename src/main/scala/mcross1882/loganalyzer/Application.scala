@@ -13,7 +13,6 @@ import mcross1882.loganalyzer._
  * Main Entry point
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 object Application {  
@@ -21,7 +20,6 @@ object Application {
      * Program start
      *
      * @since  1.0
-     * @access public
      * @param  Array[String] args the program arguments
      * @return Unit
      */
@@ -47,7 +45,6 @@ object Application {
      * Program help dialog
      *
      * @since  1.0
-     * @access protected
      * @return Unit
      */
     protected def help: Unit = println("Syntax: loganalyzer [options] [service]")

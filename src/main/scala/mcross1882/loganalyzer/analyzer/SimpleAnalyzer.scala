@@ -16,19 +16,16 @@ import scala.util.matching.Regex
  * for the tokens they match against
  *
  * @since  1.0
- * @access public
  * @author Matthew Cross <blacklightgfx@gmail.com>
- * @param  String cat The category name
- * @param  Regex pt The regex pattern
- * @param  String msg The output message
+ * @param  cat The category name
+ * @param  pt The regex pattern
+ * @param  msg The output message
  */
 class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
     /**
      * Key value map for storing message and occurrences
      *
      * @since  1.0
-     * @access public
-     * @var    HashMap[String,Int]
      */
     private val _messages = new HashMap[String,Int]
     
