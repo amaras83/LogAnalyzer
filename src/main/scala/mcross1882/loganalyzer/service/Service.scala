@@ -7,10 +7,9 @@
  */
 package mcross1882.loganalyzer.service
 
-import java.io.File
-import java.util.Scanner
 import mcross1882.loganalyzer.parser.Parser
 import scala.collection.mutable.ListBuffer
+import scala.io.Source
 import scala.xml.XML
 
 /**
@@ -58,18 +57,10 @@ class Service(name: String, title: String, files: List[String], parsers: List[Pa
      * @return Unit
      */
     protected def readFile(filename: String): Unit = {
-        var reader: Scanner = null
         try {
-            reader = new Scanner(new File(filename))
-            while (reader.hasNext) {
-                processLine(reader.nextLine)
-            }
+            Source.fromFile(filename).getLines.foreach(processLine)
         } catch {
             case e: Exception => println("An error occurred while reading %s. (%s)".format(filename, e.getMessage))
-        } finally {
-            if (null != reader) {
-                reader.close
-            }
         }
     }
     
