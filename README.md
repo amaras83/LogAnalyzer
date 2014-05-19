@@ -30,7 +30,7 @@ Suppressed: 25
 
 Analyzers are a set of rules that match a regex expression against a single line that is read in from the logfile. They also store simple meta
 data like extracted regex text, counters, and the category to which the analyzer belongs too. Analyzers are written in XML (see sample below)
-and are located in `src/main/resources/`.
+and are located in `conf/dist/analyzers`.
 
 ```xml
 <analyzers>
