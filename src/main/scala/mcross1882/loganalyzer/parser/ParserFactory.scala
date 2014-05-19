@@ -21,13 +21,6 @@ import scala.xml.XML
  */
 object ParserFactory {
     /**
-     * @since  1.0
-     * @access private
-     * @var    String
-     */
-    private val ConfigFile = "/parsers.config"
-    
-    /**
      * Create a parser from a parser type
      *
      * @since  1.0
@@ -46,11 +39,12 @@ object ParserFactory {
      *
      * @since  1.0
      * @access public
+     * @param  String filename the xml file to load
      * @param  List[Analyzer] the predefined analyzers to use when building a parser
      * @return List[Parser]
      */
-    def createFromXml(analyzers: List[Analyzer]): List[Parser] = {
-        val root = XML.load(getClass.getResourceAsStream(ConfigFile))
+    def createFromXml(filename: String, analyzers: List[Analyzer]): List[Parser] = {
+        val root = XML.loadFile(filename)
         
         val buffer = new ListBuffer[Parser]
         val categoryBuffer = new ListBuffer[String]

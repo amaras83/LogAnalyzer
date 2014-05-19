@@ -22,22 +22,16 @@ import scala.xml.XML
  */
 object ServiceFactory {
     /**
-     * @since  1.0
-     * @access private
-     * @var    String
-     */
-    private val ConfigFile = "/services.config"
-
-    /**
      * Creates a list of parsers from an XML file
      *
      * @since  1.0
      * @access public
+     * @param  String filename the xml file to load
      * @param  List[Parsers] the predefined parsers to use when building a service
      * @return List[Service]
      */
-    def createFromXml(parsers: List[Parser]): List[Service] = {
-        val root = XML.load(getClass.getResourceAsStream(ConfigFile))
+    def createFromXml(filename: String, parsers: List[Parser]): List[Service] = {
+        val root = XML.loadFile(filename)
         
         val buffer = new ListBuffer[Service]
         val nameBuffer = new ListBuffer[String]

@@ -21,13 +21,6 @@ import scala.xml.XML
  */
 object AnalyzerFactory {
     /**
-     * @since  1.0
-     * @access private
-     * @var    String
-     */
-    private val ConfigFile = "/analyzers.config"
-    
-    /**
      * Create an analyzer from a string name
      *
      * @since  1.0
@@ -49,10 +42,11 @@ object AnalyzerFactory {
      *
      * @since  1.0
      * @access public
+     * @param  String filename the xml file to load
      * @return List[Analyzer]
      */
-    def createFromXml: List[Analyzer] = {
-        val root = XML.load(getClass.getResourceAsStream(ConfigFile))
+    def createFromXml(filename: String): List[Analyzer] = {
+        val root = XML.loadFile(filename)
         
         val buffer = new ListBuffer[Analyzer]
         
