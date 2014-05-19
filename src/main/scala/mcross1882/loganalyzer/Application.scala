@@ -31,7 +31,7 @@ object Application {
         }
         
         try {
-            val loader = new AutoLoader("conf\\dist")
+            val loader = new AutoLoader("conf%sdist".format(AutoLoader.Separator))
             
             val services = loader.loadServicesChain(args(0))
             
@@ -50,5 +50,5 @@ object Application {
      * @access protected
      * @return Unit
      */
-    protected def help: Unit = println("loganalyzer [options] [service]")
+    protected def help: Unit = println("Syntax: loganalyzer [options] [service]")
 }
