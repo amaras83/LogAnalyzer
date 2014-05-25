@@ -29,13 +29,16 @@ object Application {
         }
         
         try {
-            val loader = new AutoLoader("conf%sdist".format(AutoLoader.Separator))
+            val loader = new AutoLoader("src\\universal\\dist\\")
             
             val services = loader.loadServicesChain(args(0))
             
             for (service <- services) service.run(args(1).split(',').toList)
             
-            for (service <- services) service.print
+            for (service <- services) {
+                service.print
+                service.export
+            }
         } catch {
             case e: Exception => println("Error: %s".format(e.getMessage))
         }

@@ -7,6 +7,7 @@
  */
 package mcross1882.loganalyzer.service
 
+import mcross1882.loganalyzer.export.Export
 import mcross1882.loganalyzer.parser.Parser
 import scala.collection.mutable.ListBuffer
 import scala.io.Source
@@ -21,9 +22,21 @@ import scala.xml.XML
  * @param  name the reference name for this service
  * @param  title the title to display when rendering to stdout
  * @param  files a list of logfiles to watch
+ * @param  exports the export objects to write too
  * @param  the parsers that should be used on the logfiles
  */
-case class Service(name: String, title: String, files: List[String], parsers: List[Parser]) {
+case class Service(name: String, 
+    title: String, 
+    files: List[String], 
+    parsers: List[Parser],
+    exports: List[Export]) {
+    /**
+     * "Pretty" formatted title for writing to stdout or exports
+     *
+     * @since  1.0
+     */
+    val prettyTitle = "%s\n%s".format(title, "=" * title.length)
+    
     /**
      * Run will loop through all the logfiles and run the parsers
      * on the input provided by the logfiles
@@ -41,8 +54,25 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * @return Unit
      */
     def print: Unit = {
-        println("%s\n%s".format(title, "=" * title.length))
-        for (parser <- parsers) parser.printResults
+        println(prettyTitle)
+        for (parser <- parsers) println(parser.results)
+    }
+    
+    /**
+     * Export the services results
+     *
+     * @since  1.0
+     */
+    def export: Unit = {
+        val builder = new StringBuilder(prettyTitle)
+        for (parser <- parsers) {
+            builder.append(parser.results)
+        }
+        
+        val message = builder.toString
+        for (export <- exports) {
+            export.send(message)
+        }
     }
     
     /**
@@ -73,5 +103,5 @@ case class Service(name: String, title: String, files: List[String], parsers: Li
      * @return Unit
      */
     protected def processLine(line: String, dates: List[String]): Unit = 
-        for (parser <- parsers) parser.parseLine(line, dates)
+        for (parser <- parsers) parser.parseLine(line, dates)   
 }

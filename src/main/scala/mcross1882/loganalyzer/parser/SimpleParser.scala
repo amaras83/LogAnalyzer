@@ -57,14 +57,15 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
     /**
      * {@inheritdoc}
      */
-    def printResults: Unit = {
+    def results: String = {
+        val builder = new StringBuilder
         for ((category, subset) <- analyzers.groupBy(_.category) if !category.equals("timestamp")) {
-            println(category)
+            builder.append("%s\n".format(category))
             for (analyzer <- subset if _records.contains(analyzer.category)) {
-                print("%s".format(analyzer.message))
+                builder.append("%s\n".format(analyzer.message))
             }
-            println
         }
+        builder.toString
     }
     
     /**

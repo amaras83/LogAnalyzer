@@ -7,10 +7,10 @@
  */
 package mcross1882.loganalyzer.service
 
+import mcross1882.loganalyzer.export.ExportFactory
 import mcross1882.loganalyzer.parser.Parser
 import scala.collection.mutable.ListBuffer
 import scala.xml.XML
-
 
 /**
  * ServiceFactory constructs a list of services
@@ -31,14 +31,15 @@ object ServiceFactory {
     def createFromXml(filename: String, parsers: List[Parser]): List[Service] = {
         val root = XML.loadFile(filename)
         
-        val buffer = new ListBuffer[Service]
-        val nameBuffer = new ListBuffer[String]
-        val fileBuffer = new ListBuffer[String]
+        val buffer       = new ListBuffer[Service]
+        val nameBuffer   = new ListBuffer[String]
+        val fileBuffer   = new ListBuffer[String]
         
         var name: String = ""
         var title: String = ""
         
         (root \ "service").foreach{ service =>
+            fileBuffer.clear
             nameBuffer.clear
             
             name = (service \ "@name").text
@@ -56,7 +57,8 @@ object ServiceFactory {
                 name, 
                 title, 
                 fileBuffer.toList, 
-                buildParserList(parsers, nameBuffer.toList)))
+                buildParserList(parsers, nameBuffer.toList),
+                ExportFactory.createFromNodeSeq(service)))
         }
         
         buffer.toList

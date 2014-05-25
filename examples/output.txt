@@ -1,0 +1,10 @@
+Demo Diagnostics Report
+=======================Emergency
+- Whoops something went wrong!: 2
+
+Debugging Noise
+Suppressed: 12
+
+Failed Logins
+someone@test.com experienced a failed login: 1
+

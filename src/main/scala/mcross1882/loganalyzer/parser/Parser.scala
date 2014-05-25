@@ -28,12 +28,12 @@ trait Parser {
     def parseLine(line: String, dates: List[String]): Unit
     
     /**
-     * Print the aggregated log results
+     * Return the aggregated log results as a single string
      *
      * @since  1.0
-     * @return Unit
+     * @return String
      */
-    def printResults: Unit
+    def results: String
     
     /**
      * Returns the name of the parser

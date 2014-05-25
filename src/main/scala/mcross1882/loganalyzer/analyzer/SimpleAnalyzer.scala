@@ -11,9 +11,8 @@ import scala.collection.mutable.HashMap
 import scala.util.matching.Regex
 
 /**
- * Analyzer trait matches predefined tokens against
- * the log line. Analyzer also provide output information
- * for the tokens they match against
+ * SimpleAnalyzer uses a regex pattern and a formatted
+ * message to produce a condensed log result
  *
  * @since  1.0
  * @author Matthew Cross <blacklightgfx@gmail.com>
