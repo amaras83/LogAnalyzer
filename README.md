@@ -56,6 +56,25 @@ and are located in `conf/dist/analyzers`.
 </analyzers>
 ```
 
+#### Filtering on Timestamps
+
+LogAnalyzer has a great feature of being able to strip out timestamps and filter on them. This is done by using a analyzer with the category `timestamp`..
+
+```xml
+<analyzer category="timestamp" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
+    $timestamp
+</analyzer>
+```
+
+The example above assumes that our log lines contain a chunk of text that may look like this...
+
+```
+[2014-05-01 04:35:11] Warning: Some info about what went wrong...
+```
+
+The LogAnalyzer would match the text `[2014-05-01 04:35:11]` and will extract `2014-05-01` as the variable `$timestamp`.
+LogAnalyzer will then use this value to perform filtering when passing in dates from the command line.
+
 
 #### Parsers
 
@@ -89,9 +108,19 @@ that should be parsed as well as a list of parsers that should be used on the in
         <parsers>
             <parser name="DemoParser" />
         </parsers>
+        
+        <exports>
+            <file src="examples/output.txt" />
+        </exports>
     </service>
 </services>
 ```
+
+### Exports
+
+Services support the ability to export your data in a number of formats. Currently File exports are the only implemented module but email
+exports and ftp exports are also planned. By default LogAnalyzer will output all the service results to stdout however you can specify a list
+of files you wish to export the results too within the service (see above `Service` example for a file export configuration).
 
 ### Extending the API
 

@@ -35,7 +35,7 @@ case class Service(name: String,
      *
      * @since  1.0
      */
-    val prettyTitle = "%s\n%s".format(title, "=" * title.length)
+    val prettyTitle = "%s\n%s\n".format(title, "=" * title.length)
     
     /**
      * Run will loop through all the logfiles and run the parsers

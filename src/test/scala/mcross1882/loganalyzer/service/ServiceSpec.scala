@@ -8,6 +8,7 @@
 package mcross1882.loganalyzer.test.service
 
 import org.scalatest._
+import mcross1882.loganalyzer.export.{Export, FileExport}
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.SimpleParser
 import mcross1882.loganalyzer.service.{Service, ServiceFactory}
@@ -37,14 +38,21 @@ class ServiceSpec extends FlatSpec with Matchers {
         service.print
     }
     
+    "export" should "write the service results to all the associated exports" in {
+        val service = buildService
+        service.export
+    }
+    
     protected def buildService = 
-        new Service("test_service", "A Test Service", List("src/test/resources/sample.txt"), buildParsers)
+        new Service("test_service", "A Test Service", List("src/test/resources/sample.txt"), buildParsers, List(
+            new FileExport("src/test/resources/output.txt")
+        ))
             
     protected def buildParsers = List(
         new SimpleParser("sample_parser", buildAnalyzers)
     )
     
     protected def buildAnalyzers = List(
-        new SimpleAnalyzer("timestamp", new Regex("""\[(\d\d\d\d-\d\d-\d\d)""", "timestamp"), "$timestamp")
+        new SimpleAnalyzer("timestamp", new Regex("""\[(\d+-\d+-\d+)\]""", "timestamp"), "$timestamp")
     )
 }

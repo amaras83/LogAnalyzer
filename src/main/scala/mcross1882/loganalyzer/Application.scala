@@ -29,7 +29,7 @@ object Application {
         }
         
         try {
-            val loader = new AutoLoader("src\\universal\\dist\\")
+            val loader = new AutoLoader("src/universal/dist/")
             
             val services = loader.loadServicesChain(args(0))
             
