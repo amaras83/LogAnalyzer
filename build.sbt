@@ -18,8 +18,8 @@ organization := "mcross1882.loganalyzer"
 packageArchetype.java_application
 
 libraryDependencies ++= Seq(
-   "org.specs2" %% "specs2" % "2.3.4" % "test",
-   "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
+   "org.scalatest" % "scalatest_2.10" % "2.1.0-RC3" % "test",
+   "org.scalamock" %% "scalamock-scalatest-support" % "3.1.RC1" % "test"
 )
 
 mainClass := Some("mcross1882.loganalyzer.Application")
@@ -29,4 +29,4 @@ resolvers ++= Seq(
     "releases" at "http://oss.sonatype.org/content/repositories/releases"
 )
  
-scalacOptions ++= Seq("-unchecked", "-deprecation")
+scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")

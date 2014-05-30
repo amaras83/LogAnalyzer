@@ -7,6 +7,7 @@
  */
 package mcross1882.loganalyzer.export
 
+import java.io.{File, FileOutputStream}
 import scala.collection.mutable.ListBuffer
 import scala.xml.NodeSeq
 
@@ -28,16 +29,19 @@ object ExportFactory {
         val buffer = new ListBuffer[Export]
         
         (nodes \ "exports" \ "file").foreach{ file =>
-            buffer.append(new FileExport((file \ "@src").text))
+            buffer.append(createFileExport((file \ "@src").text))
         }
-            
-        (nodes \ "exports" \ "email").foreach{ email =>
-            buffer.append(new EmailExport(
-                (email \ "@to").text,
-                (email \ "@from").text,
-                (email \ "@subject").text))
-        }
-        
+
         buffer.toList
     }
+    
+    /**
+     * Create a FileExport with an associated FileOutputStream
+     *
+     * @since  1.0
+     * @param  filename the path of the file to open for writing
+     * @return a newly constructed FileExport
+     */
+    def createFileExport(filename: String) = 
+        new FileExport(new FileOutputStream(new File(filename)))
 }

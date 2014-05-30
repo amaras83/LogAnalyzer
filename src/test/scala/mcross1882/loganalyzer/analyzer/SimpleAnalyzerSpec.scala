@@ -7,11 +7,11 @@
  */
 package mcross1882.loganalyzer.test.analyzer
 
-import org.scalatest._
 import scala.util.matching.Regex
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
+import mcross1882.loganalyzer.test.DefaultTestSuite
 
-class SimpleAnalyzerSpec extends FlatSpec with Matchers {
+class SimpleAnalyzerSpec extends DefaultTestSuite {
     
     "isMatch(...)" should "return true if the regex matches against the line" in {
         val analyzer = buildAnalyzer

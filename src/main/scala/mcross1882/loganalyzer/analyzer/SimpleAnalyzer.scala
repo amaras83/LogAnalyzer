@@ -9,6 +9,7 @@ package mcross1882.loganalyzer.analyzer
 
 import scala.collection.mutable.HashMap
 import scala.util.matching.Regex
+import scala.util.matching.Regex.Match
 
 /**
  * SimpleAnalyzer uses a regex pattern and a formatted
@@ -32,16 +33,10 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
      * {@inheritdoc}
      */
     def isMatch(line: String): Boolean = {
-        var tempLine: String = ""
-        
         pt findFirstMatchIn line match {
             case Some(text) => {
-                tempLine = msg
-                for (name <- text.groupNames if !name.isEmpty && tempLine.contains("$" + name)) {
-                    tempLine = tempLine.replace("$" + name, text.group(name))
-                }
-                
-                _messages.put(tempLine, _messages.getOrElse(tempLine, 0) + 1)
+                val formattedLine = replaceMessageVariables(text)
+                _messages.put(formattedLine, _messages.getOrElse(formattedLine, 0) + 1)
                 true
             }
             case None => false
@@ -57,18 +52,31 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
      * {@inheritdoc}
      */
     def message: String = {
-        var result: String = ""
-        _messages.foreach{ message =>
-            val extracted = message._1
-            val count = message._2
-       
-            result += f"$extracted%s: $count%s\n"
+        val builder = new StringBuilder
+        for  ((message, count) <- _messages) {
+            builder.append(f"$message%s: $count%d\n")
         }
-        result
+        builder.toString
     }
     
     /**
      * {@inheritdoc}
      */
     def hits: Int = _messages.foldLeft(0)((res,x) => res + x._2)
+        
+    /**
+     * Replaces all the variables in a given message with their
+     * respective values. (e.g. $timestamp to 2014-05-01)
+     *
+     * @since  1.0
+     * @param  text a regex match containing groups of variable names
+     * @return a formatted string with values instead of variables
+     */
+    protected def replaceMessageVariables(text: Match): String = {
+        var formattedLine = msg
+        for (name <- text.groupNames if !name.isEmpty && formattedLine.contains("$" + name)) {
+            formattedLine = formattedLine.replace("$" + name, text.group(name))
+        }
+        formattedLine
+    }
 }

@@ -7,14 +7,14 @@
  */
 package mcross1882.loganalyzer.test.service
 
-import org.scalatest._
-import mcross1882.loganalyzer.export.{Export, FileExport}
+import mcross1882.loganalyzer.export.{Export, ExportFactory, FileExport}
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.SimpleParser
+import mcross1882.loganalyzer.test.DefaultTestSuite
 import mcross1882.loganalyzer.service.{Service, ServiceFactory}
 import scala.util.matching.Regex
 
-class ServiceSpec extends FlatSpec with Matchers {
+class ServiceSpec extends DefaultTestSuite {
 
     "run" should "iterate through the file list parsing each one iteratively" in {
         val service = buildService
@@ -45,7 +45,7 @@ class ServiceSpec extends FlatSpec with Matchers {
     
     protected def buildService = 
         new Service("test_service", "A Test Service", List("src/test/resources/sample.txt"), buildParsers, List(
-            new FileExport("src/test/resources/output.txt")
+            ExportFactory.createFileExport("src/test/resources/output.txt")
         ))
             
     protected def buildParsers = List(

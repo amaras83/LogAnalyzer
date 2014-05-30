@@ -7,10 +7,10 @@
  */
 package mcross1882.loganalyzer.test.analyzer
 
-import org.scalatest._
 import mcross1882.loganalyzer.analyzer.AnalyzerFactory
+import mcross1882.loganalyzer.test.DefaultTestSuite
 
-class AnalyzerFactorySpec extends FlatSpec with Matchers {
+class AnalyzerFactorySpec extends DefaultTestSuite {
     
     "createFromName(...)" should "should return a SimpleAnalyzer if a invalid type is passed" in {
         val analyzer = AnalyzerFactory.createFromName("badType", "sample_test", """some regex""".r, "the output message")

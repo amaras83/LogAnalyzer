@@ -7,12 +7,12 @@
  */
 package mcross1882.loganalyzer.test.service
 
-import org.scalatest._
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.SimpleParser
+import mcross1882.loganalyzer.test.DefaultTestSuite
 import mcross1882.loganalyzer.service.ServiceFactory
 
-class ServiceFactorySpec extends FlatSpec with Matchers {
+class ServiceFactorySpec extends DefaultTestSuite {
 
     "createFromXML(...)" should "return a list of services from an external XML file" in {
         val services = ServiceFactory.createFromXml("src/test/resources/services.config", buildParsers)

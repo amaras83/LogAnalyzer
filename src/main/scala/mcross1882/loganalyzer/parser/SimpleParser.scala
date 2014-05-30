@@ -40,17 +40,8 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * {@inheritdoc}
      */
     def parseLine(line: String, dates: List[String]): Unit = {
-        if (_timestamps.length > 0) {
-            val currentDate = _timestamps.head.message.split(':').head
-            if (_timestamps.head.isMatch(line) && !dates.exists(_.equals(currentDate))) {
-                return
-            }
-        }
-        
-        for (analyzer <- analyzers) {
-            if (analyzer.isMatch(line)) {
-                _records.put(analyzer.category, _records.getOrElse(analyzer.category, 0) + 1)
-            }
+        if (isTimestampInRange(line, dates)) {
+            storeAnalyzerMatches(line)
         }
     }
     
@@ -62,8 +53,9 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
         for ((category, subset) <- analyzers.groupBy(_.category) if !category.equals("timestamp")) {
             builder.append("%s\n".format(category))
             for (analyzer <- subset if _records.contains(analyzer.category)) {
-                builder.append("%s\n".format(analyzer.message))
+                builder.append(analyzer.message)
             }
+            builder.append("\n")
         }
         builder.toString
     }
@@ -72,4 +64,50 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * {@inheritdoc}
      */
     def name: String = n
+        
+    /**
+     * Determines if the line contains a valid timestamp. If the line
+     * does contain a timestamp it will be validated against the dates array
+     *
+     * @since  1.0
+     * @param  line the line to be parsed
+     * @param  dates valid dates in the range
+     * @return true if the timestamp is in range; false otherwise
+     */
+    protected def isTimestampInRange(line: String, dates: List[String]): Boolean = {
+        var currentDate = ""
+        for (timestamp <- _timestamps if timestamp.isMatch(line)) {
+            currentDate = extractTextFromMessage(timestamp)
+            if (!dates.exists(_.equals(currentDate))) {
+                return false
+            }
+        }
+        true
+    }
+    
+    /**
+     * Parses the line argument and increments the count for any
+     * analyzer category contained within the line
+     * 
+     * @since  1.0
+     * @param  line the line to be parsed
+     */
+    protected def storeAnalyzerMatches(line: String): Unit = {
+        for (analyzer <- analyzers if analyzer.isMatch(line)) {
+            _records.put(analyzer.category, _records.getOrElse(analyzer.category, 0) + 1)
+        }
+    }
+    
+    /**
+     * Extracts the text of a analyzer message
+     *
+     * @since  1.0
+     * @param  analyzer the analyzer with a message to split
+     * @return the extracted text trimmed
+     */
+    protected def extractTextFromMessage(analyzer: Analyzer): String = {
+        val fields = analyzer.message.split(":")
+        
+        if (!fields.isEmpty) fields.head.trim else ""
+    }
 }

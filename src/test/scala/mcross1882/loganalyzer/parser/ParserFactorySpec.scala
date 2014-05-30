@@ -7,11 +7,11 @@
  */
 package mcross1882.loganalyzer.test.parser
 
-import org.scalatest._
 import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.ParserFactory
+import mcross1882.loganalyzer.test.DefaultTestSuite
 
-class ParserFactorySpec extends FlatSpec with Matchers {
+class ParserFactorySpec extends DefaultTestSuite {
     
     "createFromName(...)" should "should return a SimpleParser if a invalid type is passed" in {
         val parser = ParserFactory.createFromName("badType", "sample_test", buildAnalyzers)

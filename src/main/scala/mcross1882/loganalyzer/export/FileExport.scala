@@ -7,7 +7,7 @@
  */
 package mcross1882.loganalyzer.export
 
-import java.io.{File, FileOutputStream}
+import java.io.OutputStream
 
 /**
  * File export sends services to results to a local file
@@ -15,20 +15,12 @@ import java.io.{File, FileOutputStream}
  * @since  1.0
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
-class FileExport(filename: String) extends Export {
-    /**
-     * Output stream pointing to a local file that
-     * the program can write to
-     *
-     * @since  1.0
-     */
-    protected val _outputStream = new FileOutputStream(new File(filename))
-    
+class FileExport(stream: OutputStream) extends Export {
     /**
      * {@inheritdoc}
      */
     def send(message: String): Unit = {
-        _outputStream.write(message.getBytes)
-        _outputStream.flush
+        stream.write(message.getBytes)
+        stream.flush
     }
 }
