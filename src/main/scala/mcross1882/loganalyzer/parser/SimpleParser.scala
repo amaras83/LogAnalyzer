@@ -50,12 +50,8 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      */
     def results: String = {
         val builder = new StringBuilder
-        for ((category, subset) <- analyzers.groupBy(_.category) if !category.equals("timestamp")) {
-            builder.append("%s\n".format(category))
-            for (analyzer <- subset if _records.contains(analyzer.category)) {
-                builder.append(analyzer.message)
-            }
-            builder.append("\n")
+        for ((category, subset) <- groupAnalyzersByCategory) {
+            appendAnalyzerSubset(builder, category, subset)
         }
         builder.toString
     }
@@ -109,5 +105,31 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
         val fields = analyzer.message.split(":")
         
         if (!fields.isEmpty) fields.head.trim else ""
+    }
+        
+    /**
+     * Groups analyzers by their category producing while ignoring
+     * any timestamp analyzers
+     *
+     * @since  1.0
+     * @return a list of analyzers grouped by category
+     */
+    protected def groupAnalyzersByCategory: Map[String, List[Analyzer]] =
+        analyzers.filter(!_.category.equals("timestamp")).groupBy(_.category)
+    
+    /**
+     * Appends all messages from analyzer subset into builder
+     *
+     * @since 1.0
+     * @param builder the string builder to append text too
+     * @param category the analyzer category
+     * @param subset of filtered analyzers
+     */
+    protected def appendAnalyzerSubset(builder: StringBuilder, category: String, subset: List[Analyzer]): Unit = {
+        builder.append("%s\n".format(category))
+        for (analyzer <- subset if _records.contains(analyzer.category)) {
+            builder.append(analyzer.message)
+        }
+        builder.append("\n")
     }
 }
