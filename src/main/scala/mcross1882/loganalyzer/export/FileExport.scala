@@ -20,6 +20,9 @@ class FileExport(stream: OutputStream) extends Export {
      * {@inheritdoc}
      */
     def send(message: String): Unit = {
+        if (message.isEmpty) {
+            return
+        }
         stream.write(message.getBytes)
         stream.flush
     }

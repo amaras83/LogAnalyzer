@@ -14,11 +14,11 @@ import scala.io.Source
 
 class FileExportSpec extends DefaultTestSuite {
 
-    val FixtureFile = "src/test/resources/sample_file_export.txt"
+    val FixtureFile = "src/test/resources/fixtures/file_export.txt"
     
     "send" should "write a message to the output stream and flush it" in {
         println(getClass.getResource(FixtureFile))
-        val export = new FileExport(new FileOutputStream(FixtureFile))
+        val export = buildExport
         val message = "The message to write"
         
         export.send(message)
@@ -27,4 +27,17 @@ class FileExportSpec extends DefaultTestSuite {
         
         assert(message equals lines.next)
     }
+    
+    it should "not write a empty message" in {
+        val export = buildExport
+        val message = ""
+        
+        export.send(message)
+        
+        val lines = Source.fromFile(FixtureFile).getLines
+        
+        assert(lines.isEmpty)
+    }
+    
+    protected def buildExport = new FileExport(new FileOutputStream(FixtureFile))
 }

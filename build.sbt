@@ -30,3 +30,5 @@ resolvers ++= Seq(
 )
  
 scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+
+mapGenericFilesToLinux

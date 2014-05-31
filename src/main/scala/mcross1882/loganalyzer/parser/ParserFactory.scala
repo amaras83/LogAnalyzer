@@ -58,7 +58,10 @@ object ParserFactory {
                 categoryBuffer.append((analyzer \ "@category").text)
             }
             
-            buffer.append(createFromName(parserType, name, buildAnalyzerList(analyzers, categoryBuffer.toList)))
+            buffer.append(createFromName(
+                parserType, 
+                name, 
+                buildAnalyzerList(analyzers, categoryBuffer.toList)))
         }
         
         buffer.toList
