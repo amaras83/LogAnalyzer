@@ -8,6 +8,7 @@
 package mcross1882.loganalyzer
 
 import mcross1882.loganalyzer._
+import mcross1882.loganalyzer.service.Service
 
 /**
  * Main Entry point
@@ -15,7 +16,15 @@ import mcross1882.loganalyzer._
  * @since  1.0
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
-object Application {  
+object Application {
+    /**
+     * The global system variable required to use the application
+     * this value should point to the applications conf/ directory
+     *
+     * @since 1.0
+     */
+    protected val HomeEnvironmentKey = "LOGANALYZER_HOME"
+
     /**
      * Program start
      *
@@ -26,21 +35,56 @@ object Application {
     def main(args: Array[String]) {
         if (args.length < 2) {
             return help
-        }
+        }    
         
         try {
-            val loader = new AutoLoader("src/universal/dist/")
-            
+            val loader = new AutoLoader(homeDirectory)
             val services = loader.loadServicesChain(args(0))
             
-            for (service <- services) service.run(args(1).split(',').toList)
-            
-            for (service <- services) {
-                service.print
-                service.export
-            }
+            runAllServices(services, args(1))
+            printAndExportServices(services)
         } catch {
             case e: Exception => println("Error: %s".format(e.getMessage))
+        }
+    }
+    
+    /**
+     * Returns the applications home directory for configuration files
+     * this method will throw if the LOGANALYZER_HOME environment variable
+     * is not set
+     *
+     * @since  1.0
+     * @return the path to the application home
+     */
+    protected def homeDirectory: String = {
+        val home = System.getenv(HomeEnvironmentKey)
+        if (null == home) {
+            throw new Exception("Environment variable LOGANALYZER_HOME must be set.")
+        } 
+        home
+    }
+    
+    /**
+     * Runs all services with a set of comma separated dates to filter on
+     *
+     * @since 1.0
+     * @param services the list of serviecs to run
+     * @param dates the dates to include
+     */
+    protected def runAllServices(services: List[Service], dates: String): Unit =
+        for (service <- services) service.run(dates.split(',').toList)
+     
+    /**
+     * Iterates through all services first printing the results
+     * followed by exporting them
+     *
+     * @since 1.0
+     * @param services the list of services to run
+     */
+    protected def printAndExportServices(services: List[Service]): Unit = {
+        for (service <- services) {
+            service.print
+            service.export
         }
     }
     
@@ -50,5 +94,21 @@ object Application {
      * @since  1.0
      * @return Unit
      */
-    protected def help: Unit = println("Syntax: loganalyzer [options] [service]")
+    protected def help: Unit = println(
+        """
+        Log Analyzer Help
+        =================
+        Syntax: loganalyzer [service] [dates]
+
+        ## Service
+        The name of the service you wish to run
+
+        Example: php, httpd, demo, etc..
+
+        ## Dates
+        A comma separated list of dates to filter on when parsing
+
+        Example: 2014-05-01,2014-05-02
+        """
+    )
 }
