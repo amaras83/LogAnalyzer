@@ -44,8 +44,8 @@ class ServiceSpec extends DefaultTestSuite {
     }
     
     protected def buildService = 
-        new Service("test_service", "A Test Service", List("src/test/resources/sample.txt"), buildParsers, List(
-            ExportFactory.createFileExport("src/test/resources/output.txt")
+        new Service("test_service", "A Test Service", List("src/test/resources/fixtures/small-log-in.txt"), buildParsers, List(
+            ExportFactory.createFileExport("src/test/resources/fixtures/small-log-out.txt")
         ))
             
     protected def buildParsers = List(

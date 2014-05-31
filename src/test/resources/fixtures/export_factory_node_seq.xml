@@ -1,0 +1,5 @@
+<service>
+    <exports>
+        <file src="src/test/resources/fixtures/export-factory-out.txt" />
+    </exports>
+</service>

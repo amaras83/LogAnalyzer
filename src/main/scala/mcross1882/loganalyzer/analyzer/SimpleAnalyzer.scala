@@ -66,7 +66,7 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
         
     /**
      * Replaces all the variables in a given message with their
-     * respective values. (e.g. $timestamp to 2014-05-01)
+     * respective values. (e.g. timestamp to 2014-05-01)
      *
      * @since  1.0
      * @param  text a regex match containing groups of variable names
