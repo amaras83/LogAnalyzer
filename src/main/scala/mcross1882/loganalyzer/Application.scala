@@ -59,7 +59,7 @@ object Application {
     protected def homeDirectory: String = {
         val home = System.getenv(HomeEnvironmentKey)
         if (null == home) {
-            throw new Exception("Environment variable LOGANALYZER_HOME must be set.")
+            throw new Exception(f"Environment variable $HomeEnvironmentKey%s must be set.")
         } 
         home
     }
@@ -95,20 +95,16 @@ object Application {
      * @return Unit
      */
     protected def help: Unit = println(
-        """
-        Log Analyzer Help
-        =================
-        Syntax: loganalyzer [service] [dates]
+"""
+Log Analyzer Help
+=================
+Syntax: loganalyzer [service] [dates]
 
-        ## Service
-        The name of the service you wish to run
+Service -- The name of the service you wish to run
+Example: php, httpd, demo, etc..
 
-        Example: php, httpd, demo, etc..
-
-        ## Dates
-        A comma separated list of dates to filter on when parsing
-
-        Example: 2014-05-01,2014-05-02
-        """
+Dates   -- A comma separated list of dates to filter on when parsing
+Example: "2014-05-01,2014-05-02" (single dates cane be used as well)
+"""
     )
 }
