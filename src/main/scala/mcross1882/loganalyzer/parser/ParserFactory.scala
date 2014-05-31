@@ -41,6 +41,10 @@ object ParserFactory {
      * @return List[Parser]
      */
     def createFromXml(filename: String, analyzers: List[Analyzer]): List[Parser] = {
+        if (analyzers.isEmpty) {
+            throw new IllegalArgumentException("Analyzers must be present when constructing a parser.")
+        }
+        
         val root = XML.loadFile(filename)
         
         val buffer = new ListBuffer[Parser]

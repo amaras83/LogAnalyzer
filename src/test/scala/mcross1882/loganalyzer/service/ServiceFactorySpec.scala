@@ -21,7 +21,6 @@ class ServiceFactorySpec extends FactoryTestSuite("src/test/resources/conf/servi
         
     it should "return an empty List[Service] if no xml services are defined" in {
         val services = ServiceFactory.createFromXml(loadTestFile("empty"), buildParsers)
-        
         assert(services.isEmpty)
     }
     
