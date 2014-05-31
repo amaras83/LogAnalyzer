@@ -50,8 +50,14 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      */
     def results: String = {
         val builder = new StringBuilder
-        for ((category, subset) <- groupAnalyzersByCategory) {
-            appendAnalyzerSubset(builder, category, subset)
+        var category = ""
+        val groups = groupAnalyzersByCategory
+        
+        for (analyzer <- analyzers) {
+            category = analyzer.category
+            if (groups.contains(category)) {
+                appendAnalyzerSubset(builder, category, groups(category))
+            }
         }
         builder.toString
     }
