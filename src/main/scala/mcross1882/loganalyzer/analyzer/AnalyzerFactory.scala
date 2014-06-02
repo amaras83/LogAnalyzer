@@ -9,7 +9,7 @@ package mcross1882.loganalyzer.analyzer
 
 import scala.collection.mutable.ListBuffer
 import scala.util.matching.Regex
-import scala.xml.XML
+import scala.xml.{NodeSeq, XML}
 
 /**
  * AnalyzerFactory creates a list of
@@ -19,6 +19,13 @@ import scala.xml.XML
  * @author Matthew Cross <blacklightgfx@gmail.com>
  */
 object AnalyzerFactory {
+    /**
+     * A list buffer for appending analyzers to
+     *
+     * @since 1.0
+     */
+    private val _analyzerBuffer = new ListBuffer[Analyzer]
+    
     /**
      * Create an analyzer from a string name
      *
@@ -44,23 +51,82 @@ object AnalyzerFactory {
      */
     def createFromXml(filename: String): List[Analyzer] = {
         val root = XML.loadFile(filename)
-        
-        val buffer = new ListBuffer[Analyzer]
-        
-        (root \ "analyzer").foreach{ analyzer =>
-            var anType   = (analyzer \ "@type").text
-            val category = (analyzer \ "@category").text
-            val regex    = (analyzer \ "@regex").text
-            val output   = analyzer.text.trim
-            val args     = (analyzer \ "@vars").text.split('|')
-            
-            if (anType.isEmpty) {
-                anType = "SimpleAnalyzer"
-            }
-            
-            buffer.append(createFromName(anType, category, new Regex(regex, args: _*), output))
-        }
-        
-        buffer.toList
+        readAnalyzersFromXml(root)
     }
+    
+    /**
+     * Reads all analyzer elements into the list buffer
+     *
+     * @since  1.0
+     * @param  root the xml root containing the analyzer elements
+     * @return a list of analyzer from the xml document
+     */
+    protected def readAnalyzersFromXml(root: NodeSeq): List[Analyzer] = {
+        _analyzerBuffer.clear
+        (root \ "analyzer").foreach{ analyzer =>
+            val meta = readXmlMetaData(analyzer)
+            appendAnalyzerToBuffer(meta)
+        }
+        _analyzerBuffer.toList
+    }
+    
+    /**
+     * Generates a AnalyzerXmlMeta definition from the xml document
+     *
+     * @since  1.0
+     * @param  leaf the xml node containing the analyzer attributes
+     * @return meta set containing attrbutes values from the xml document
+     */
+    protected def readXmlMetaData(leaf: NodeSeq): AnalyzerXmlMeta = {
+        val analyzerType = (leaf \ "@type").text
+        
+        new AnalyzerXmlMeta(
+            extractAnalyzerType(leaf)
+            , (leaf \ "@category").text
+            , (leaf \ "@regex").text
+            , leaf.text.trim
+            , (leaf \ "@vars").text.split("|").toList
+        )
+    }
+        
+    /**
+     * Appends a single analyzer to the list buffer
+     *
+     * @since 1.0
+     * @param meta the AnalyzerXmlMeta to construct the new analyzer with
+     */
+    protected def appendAnalyzerToBuffer(meta: AnalyzerXmlMeta): Unit = {
+        _analyzerBuffer.append(createFromName(
+            meta.analyzerType 
+            , meta.category
+            , new Regex(meta.regexPattern, meta.regexArgs: _*)
+            , meta.outputMessage))
+    }
+    
+    /**
+     * Extracts the analyzer type from an xml node
+     *
+     * @since  1.0
+     * @param  leaf the xml node to extract an analyzer type from
+     * @return the analyzer type as a string
+     */
+    protected def extractAnalyzerType(leaf: NodeSeq): String = {
+        var analyzerType = (leaf \ "@type").text
+        if (analyzerType.isEmpty) {
+            analyzerType = "SimpleAnalyzer"
+        }
+        analyzerType
+    }
+    
+    /**
+     * Lazy value object to avoid passing large amounts of parameters around
+     *
+     * @since 1.0
+     */
+    protected case class AnalyzerXmlMeta(
+        analyzerType: String,
+        category: String,
+        regexPattern: String,
+        outputMessage: String,
+        regexArgs: List[String])
 }
