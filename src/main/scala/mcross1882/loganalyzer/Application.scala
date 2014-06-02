@@ -7,7 +7,6 @@
  */
 package mcross1882.loganalyzer
 
-import mcross1882.loganalyzer._
 import mcross1882.loganalyzer.service.Service
 
 /**
@@ -18,13 +17,6 @@ import mcross1882.loganalyzer.service.Service
  */
 object Application {
     /**
-     * Dates command line argument index
-     *
-     * @since 1.0
-     */
-    private val DatesArgumentIndex = 1
-    
-    /**
      * Program start
      *
      * @since  1.0
@@ -32,24 +24,35 @@ object Application {
      * @return Unit
      */
     def main(args: Array[String]) {
+        val console = createApplicationConsole
         if (args.length < 1) {
-            return help
+            return console.help
         }
         
-        var dates = ""
-        if (args.isDefinedAt(DatesArgumentIndex)) {
-            args(DatesArgumentIndex)
-        }
+        val params = console.build(args)
         
         try {
-            val loader = new AutoLoader(AutoLoader.homeDirectory)
-            val services = loader.loadServicesChain(args(0))
+            val loader = new AutoLoader(AutoLoader.HomeDirectory)
+            val services = loader.loadServicesChain(params("service"))
             
-            runAllServices(services, dates)
+            runAllServices(services, params.getOrElse("dates", ""))
             printAndExportServices(services)
         } catch {
             case e: Exception => println("Error: %s".format(e.getMessage))
         }
+    }
+   
+    /**
+     * Create the application console to parse command line arguments
+     *
+     * @since  1.0
+     * @return Command line Console
+     */
+    protected def createApplicationConsole: Console = {
+        val console = new Console
+        console
+            .argument("service", "The service to run (demo, php, httpd, etc...)")
+            .argument("dates", "Comma separated date values to filter on (Format YYYY-MM-DD HH:mm:ss time is optional)")
     }
     
     /**
@@ -92,24 +95,4 @@ object Application {
             service.export
         }
     }
-    
-    /**
-     * Program help dialog
-     *
-     * @since  1.0
-     * @return Unit
-     */
-    protected def help: Unit = println(
-"""
-Log Analyzer Help
-=================
-Syntax: loganalyzer [service] [dates]
-
-Service -- The name of the service you wish to run
-Example: php, httpd, demo, etc..
-
-Dates   -- A comma separated list of dates to filter on when parsing
-Example: "2014-05-01,2014-05-02" (single dates cane be used as well)
-"""
-    )
 }

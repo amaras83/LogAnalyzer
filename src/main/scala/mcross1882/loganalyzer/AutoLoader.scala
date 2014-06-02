@@ -41,7 +41,7 @@ object AutoLoader {
      * @since  1.0
      * @return the path to the application home
      */
-    def homeDirectory: String = {
+    def HomeDirectory: String = {
         val home = System.getenv(HomeEnvironmentKey)
         if (null == home) {
             throw new Exception(f"Environment variable $HomeEnvironmentKey%s must be set.")
