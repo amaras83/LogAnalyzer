@@ -1,15 +1,15 @@
 Demo Diagnostics Report
 =======================
-Emergency
-- Whoops something went wrong!: 2
-
 Date Range
 Parsing records that occurred on 2014-05-01: 12
 Parsing records that occurred on 2014-05-02: 16
 
-Debugging Noise
-Suppressed: 25
+Emergency
+- Whoops something went wrong!: 2
 
 Failed Logins
 someone@test.com experienced a failed login: 1
+
+Debugging Noise
+Suppressed: 25
 
