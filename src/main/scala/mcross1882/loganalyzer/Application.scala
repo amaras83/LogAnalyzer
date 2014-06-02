@@ -42,7 +42,7 @@ object Application {
         }
         
         try {
-            val loader = new AutoLoader(AutoLoader.homeDirectory)
+            val loader = new AutoLoader(AutoLoader.HomeDirectory)
             val services = loader.loadServicesChain(args(0))
             
             runAllServices(services, dates)
