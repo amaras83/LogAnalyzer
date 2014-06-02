@@ -95,24 +95,4 @@ object Application {
             service.export
         }
     }
-    
-    /**
-     * Program help dialog
-     *
-     * @since  1.0
-     * @return Unit
-     */
-    protected def help: Unit = println(
-"""
-Log Analyzer Help
-=================
-Syntax: loganalyzer [service] [dates]
-
-Service -- The name of the service you wish to run
-Example: php, httpd, demo, etc..
-
-Dates   -- A comma separated list of dates to filter on when parsing
-Example: "2014-05-01,2014-05-02" (single dates cane be used as well)
-"""
-    )
 }
