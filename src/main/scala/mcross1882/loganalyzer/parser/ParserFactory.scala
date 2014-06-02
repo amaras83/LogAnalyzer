@@ -9,7 +9,7 @@ package mcross1882.loganalyzer.parser
 
 import mcross1882.loganalyzer.analyzer.Analyzer
 import scala.collection.mutable.ListBuffer
-import scala.xml.XML
+import scala.xml.{NodeSeq, XML}
 
 /**
  * ParserFactory constructs a list of parsers
@@ -20,6 +20,20 @@ import scala.xml.XML
  */
 object ParserFactory {
     /**
+     * A list buffer for appending parser
+     *
+     * @since 1.0
+     */
+    private val _parserBuffer = new ListBuffer[Parser]
+    
+    /**
+     * A list of analyzer categories to store bind with a given parser
+     *
+     * @since 1.0
+     */
+    private val _analyzerCategories = new ListBuffer[String]
+    
+    /**
      * Create a parser from a parser type
      *
      * @since  1.0
@@ -28,8 +42,14 @@ object ParserFactory {
      * @param  analyzers to use bind
      * @return Parser
      */
-    def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = parserType match {
-        case _ => new SimpleParser(name, analyzers)
+    def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = {
+        if (isIllegalString(parserType) || isIllegalString(name)) {
+            throw new IllegalArgumentException("Parser type and name cannot be null or empty");
+        }
+        
+        parserType match {
+            case _ => new SimpleParser(name, analyzers)
+        }
     }
 
     /**
@@ -46,39 +66,64 @@ object ParserFactory {
         }
         
         val root = XML.loadFile(filename)
-        
-        val buffer = new ListBuffer[Parser]
-        val categoryBuffer = new ListBuffer[String]
-        var name: String = ""
-        var parserType: String = ""
-        
-        (root \ "parser").foreach{ parser =>
-            categoryBuffer.clear
-            
-            name = (parser \ "@name").text
-            parserType = (parser \ "@type").text
-            
-            (parser \ "analyzer").foreach{ analyzer =>
-                categoryBuffer.append((analyzer \ "@category").text)
-            }
-            
-            buffer.append(createFromName(
-                parserType, 
-                name, 
-                buildAnalyzerList(analyzers, categoryBuffer.toList)))
-        }
-        
-        buffer.toList
+        readParsersIntoBuffer(root, analyzers)
     }
     
     /**
-     * Build a list of analyzers given a list of categories
+     * Read all parsers in the configuration file into the parser list buffer
+     *
+     * @since  1.0
+     * @param  root the xml root node containing the parsers
+     * @param  analyzers a list of analyzers to be filtered then bound to the parsers
+     * @return a list of imported parsers
+     */
+    protected def readParsersIntoBuffer(root: NodeSeq, analyzers: List[Analyzer]): List[Parser] = {   
+        _parserBuffer.clear
+        (root \ "parser").foreach{ parser =>
+            readAnalyzersIntoBuffer(parser)
+        
+            _parserBuffer.append(createFromName(
+                (parser \ "@type").text, 
+                (parser \ "@name").text, 
+                buildAnalyzerList(analyzers)))
+        }
+        _parserBuffer.toList
+    }
+    
+    /**
+     * Reads an xml node sequence of analyzer elements
+     * storing their respective category attributes to load later
+     *
+     * @since  1.0
+     * @param  root the xml root contains the analyzer element list
+     * @return a list of analyzer categories
+     */
+    protected def readAnalyzersIntoBuffer(root: NodeSeq): List[String] = {
+        _analyzerCategories.clear
+        (root \ "analyzer").foreach{ analyzer =>
+            _analyzerCategories.append((analyzer \ "@category").text)
+        }
+        _analyzerCategories.toList
+    }
+    
+    /**
+     * Build a list of analyzers matched to a list of categories
      *
      * @since  1.0
      * @param  analyzers
      * @param  categories
      * @return List[Analyzer]
      */
-    protected def buildAnalyzerList(analyzers: List[Analyzer], categories: List[String]): List[Analyzer] =
-        analyzers.filter(x => categories.contains(x.category))
+    protected def buildAnalyzerList(analyzers: List[Analyzer]): List[Analyzer] =
+        analyzers.filter(x => _analyzerCategories.contains(x.category))
+        
+    /**
+     * Checks if a string is null or empty
+     *
+     * @since  1.0
+     * @param  text the string to check
+     * @return true if the string is not null and not empty; false otherwise
+     */
+    protected def isIllegalString(text: String): Boolean = 
+        null == text || text.isEmpty
 }

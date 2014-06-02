@@ -18,6 +18,18 @@ class ParserFactorySpec extends FactoryTestSuite("src/test/resources/conf/parser
         parser.name should be("sample_test")
     }
     
+    it should "throw an exception if a null parserType argument is passed in" in {
+        intercept[IllegalArgumentException] {
+            val parser = ParserFactory.createFromName(null, "sample_test", buildAnalyzers)
+        }
+    }
+    
+    it should "fail if a null name argument is passed in" in {
+        intercept[IllegalArgumentException] {
+            val parser = ParserFactory.createFromName("badType", null, buildAnalyzers)
+        }
+    }
+    
     "createFromXML" should "return a list of parsers from an external XML file" in {
         val parser = ParserFactory.createFromXml(loadTestFile("default"), buildAnalyzers)
         parser(0).name should be("DemoParser")
