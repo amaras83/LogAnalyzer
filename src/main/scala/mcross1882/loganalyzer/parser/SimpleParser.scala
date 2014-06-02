@@ -40,7 +40,7 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * {@inheritdoc}
      */
     def parseLine(line: String, dates: List[String]): Unit = {
-        if (isTimestampInRange(line, dates)) {
+        if (dates.isEmpty || isTimestampInRange(line, dates)) {
             storeAnalyzerMatches(line)
         }
     }

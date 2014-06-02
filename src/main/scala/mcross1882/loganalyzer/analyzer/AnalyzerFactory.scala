@@ -49,10 +49,8 @@ object AnalyzerFactory {
      * @param  filename the xml file to load
      * @return List[Analyzer]
      */
-    def createFromXml(filename: String): List[Analyzer] = {
-        val root = XML.loadFile(filename)
-        readAnalyzersFromXml(root)
-    }
+    def createFromXml(filename: String): List[Analyzer] = 
+        readAnalyzersFromXml(XML.loadFile(filename))
     
     /**
      * Reads all analyzer elements into the list buffer
@@ -85,7 +83,7 @@ object AnalyzerFactory {
             , (leaf \ "@category").text
             , (leaf \ "@regex").text
             , leaf.text.trim
-            , (leaf \ "@vars").text.split("|").toList
+            , (leaf \ "@vars").text.split('|').toList
         )
     }
         

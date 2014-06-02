@@ -19,11 +19,35 @@ import mcross1882.loganalyzer.service.{Service, ServiceFactory}
  */
 object AutoLoader {
     /**
+     * The global system variable required to use the application
+     * this value should point to the applications conf/ directory
+     *
+     * @since 1.0
+     */
+    protected val HomeEnvironmentKey = "LOGANALYZER_HOME"
+    
+    /**
      * OS dependent separator for file paths
      *
      * @since  1.0
      */
     val Separator = System.getProperty("file.separator")
+        
+    /**
+     * Returns the applications home directory for configuration files
+     * this method will throw if the LOGANALYZER_HOME environment variable
+     * is not set
+     *
+     * @since  1.0
+     * @return the path to the application home
+     */
+    def homeDirectory: String = {
+        val home = System.getenv(HomeEnvironmentKey)
+        if (null == home) {
+            throw new Exception(f"Environment variable $HomeEnvironmentKey%s must be set.")
+        } 
+        home
+    }
 }
 
 /**
