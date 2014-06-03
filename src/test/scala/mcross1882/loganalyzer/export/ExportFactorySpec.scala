@@ -14,6 +14,8 @@ import scala.io.Source
 import scala.xml.XML
 
 class ExportFactorySpec extends DefaultTestSuite {
+
+    val toEmail = ""
     
     val xmlFile = "src/test/resources/fixtures/export_factory_node_seq.xml"
     
@@ -24,5 +26,14 @@ class ExportFactorySpec extends DefaultTestSuite {
         
         assert(1 == exports.length)
         assert("FileExport" equals exports.head.getClass.getSimpleName)
+    }
+    
+    "createEmailExport" should "return a EmailExport class ready to an email" in {
+        val root = XML.loadFile(xmlFile)
+        
+        if (!toEmail.isEmpty) {
+            val export = ExportFactory.createEmailExport("gmail", toEmail, toEmail, "Test Subject")
+            export.send("This is some test content")
+        }
     }
 }
