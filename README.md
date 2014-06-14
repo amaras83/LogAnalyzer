@@ -111,6 +111,8 @@ that should be parsed as well as a list of parsers that should be used on the in
         
         <exports>
             <file src="examples/output.txt" />
+            
+            <email name="gmail" to="recipient@gmail.com" from="sender@gmail.com" subject="Demo Diagnostics Demo" />
         </exports>
     </service>
 </services>
@@ -118,9 +120,10 @@ that should be parsed as well as a list of parsers that should be used on the in
 
 ### Exports
 
-Services support the ability to export your data in a number of formats. Currently File exports are the only implemented module but email
-exports and ftp exports are also planned. By default LogAnalyzer will output all the service results to stdout however you can specify a list
-of files you wish to export the results too within the service (see above `Service` example for a file export configuration).
+Services support the ability to export your data in different formats such as...
+
+- FileExports which write your log analysis to local files
+- EmailExports which send your log analysis to a given email
 
 ### Extending the API
 
