@@ -9,7 +9,7 @@
 //
 name := "LogAnalyzer"
 
-version := "1.0"
+version := "1.0a"
 
 scalaVersion := "2.10.3"
 
