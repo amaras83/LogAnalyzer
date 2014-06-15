@@ -28,6 +28,14 @@ class ConsoleSpec extends DefaultTestSuite {
         args("dates") should be(dates)
     }
     
+    "build" should "throw an exception when using the wrong number of arguments" in {
+        val console = buildConsole
+        
+        intercept[IllegalArgumentException] {
+            console.build(Array())
+        }
+    }
+    
     "print" should "print the required arguments with descriptions" in {
         val console = buildConsole
         console.help
