@@ -20,6 +20,7 @@ packageArchetype.java_application
 libraryDependencies ++= Seq(
    "org.scalatest" % "scalatest_2.10" % "2.1.0-RC3" % "test",
    "org.scalamock" %% "scalamock-scalatest-support" % "3.1.RC1" % "test",
+   "org.mockito" % "mockito-all" % "1.9.5",
    "javax.mail" % "mail" % "1.4.1"
 )
 

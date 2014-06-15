@@ -10,6 +10,7 @@ package mcross1882.loganalyzer.test.parser
 import mcross1882.loganalyzer.analyzer.{Analyzer, SimpleAnalyzer}
 import mcross1882.loganalyzer.parser.ParserFactory
 import mcross1882.loganalyzer.test.FactoryTestSuite
+import scala.util.matching.Regex
 
 class ParserFactorySpec extends FactoryTestSuite("src/test/resources/conf/parsers") {
     
@@ -53,6 +54,6 @@ class ParserFactorySpec extends FactoryTestSuite("src/test/resources/conf/parser
     }
     
     protected def buildAnalyzers = List(
-        new SimpleAnalyzer("sample_test", """some regex""".r, "the output message")
+        new SimpleAnalyzer("test-analyzer", "Test Category", new Regex("""a red fox (\w+)""", "action"), "The red fox $action")
     )
 }

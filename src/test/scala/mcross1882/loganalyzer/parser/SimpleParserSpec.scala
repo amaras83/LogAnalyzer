@@ -18,14 +18,14 @@ class SimpleParserSpec extends DefaultTestSuite {
         val parser = buildParser   
         parser.parseLine("a red fox jumped over the fence", List.empty[String])
         
-        assert("sample_test\nThe red fox jumped: 1\n\n" equals parser.results)
+        assert("Test Category\nThe red fox jumped: 1\n\n" equals parser.results)
     }
     
     it should "not store an unmatched regex line" in {
         val parser = buildParser
         parser.parseLine("the red fox ran through the woods", List.empty[String])
         
-        assert("sample_test\n\n" equals parser.results)
+        assert("Test Category\n\n" equals parser.results)
     }
     
     it should "filter on a timestamp if one is present within the line" in {
@@ -50,7 +50,7 @@ class SimpleParserSpec extends DefaultTestSuite {
         parser.parseLine("a red fox jumped over the fence", List.empty[String])
         parser.parseLine("a red fox ran through the woods", List.empty[String])
         
-        assert("sample_test\nThe red fox ran: 1\nThe red fox jumped: 1\n\n" equals parser.results)
+        assert("Test Category\nThe red fox ran: 1\nThe red fox jumped: 1\n\n" equals parser.results)
     }
     
     protected def buildTimestampParser: Parser = {
@@ -58,13 +58,14 @@ class SimpleParserSpec extends DefaultTestSuite {
         
         new SimpleParser("timestamp_parser",
             List (
-                new SimpleAnalyzer("timestamp", datePattern, "$timestamp"),
-                new SimpleAnalyzer("Dates Analyzed", datePattern, "$timestamp")
+                new SimpleAnalyzer("timestamp", "timestamp", datePattern, "$timestamp"),
+                new SimpleAnalyzer("date-analyzer", "Dates Analyzed", datePattern, "$timestamp")
             )
         )
     }
     
-    protected def buildAnalyzers = List(new SimpleAnalyzer("sample_test", new Regex("""a red fox (\w+)""", "action"), "The red fox $action"))
+    protected def buildAnalyzers = List(
+        new SimpleAnalyzer("test-analyzer", "Test Category", new Regex("""a red fox (\w+)""", "action"), "The red fox $action"))
     
     protected def buildParser = new SimpleParser("sample_parser", buildAnalyzers)
 }

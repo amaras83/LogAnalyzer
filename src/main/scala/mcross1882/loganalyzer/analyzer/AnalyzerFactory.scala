@@ -31,14 +31,15 @@ object AnalyzerFactory {
      *
      * @since  1.0
      * @param  anType the analyzer type
+     * @param  name the analzyer name
      * @param  category the analyzer category
      * @param  pattern the pattern to match against the log line
      * @param  message the output message
      * @return Analyzer
      */
-    def createFromName(anType: String, category: String, pattern: Regex, message: String): Analyzer = {
+    def createFromName(anType: String, name: String, category: String, pattern: Regex, message: String): Analyzer = {
         anType match {
-            case _ => new SimpleAnalyzer(category, pattern, message)
+            case _ => new SimpleAnalyzer(name, category, pattern, message)
         }
     }
 
@@ -76,10 +77,9 @@ object AnalyzerFactory {
      * @return meta set containing attrbutes values from the xml document
      */
     protected def readXmlMetaData(leaf: NodeSeq): AnalyzerXmlMeta = {
-        val analyzerType = (leaf \ "@type").text
-        
         new AnalyzerXmlMeta(
-            extractAnalyzerType(leaf)
+            (leaf \ "@name").text
+            , extractAnalyzerType(leaf)
             , (leaf \ "@category").text
             , (leaf \ "@regex").text
             , leaf.text.trim
@@ -96,6 +96,7 @@ object AnalyzerFactory {
     protected def appendAnalyzerToBuffer(meta: AnalyzerXmlMeta): Unit = {
         _analyzerBuffer.append(createFromName(
             meta.analyzerType 
+            , meta.analyzerName
             , meta.category
             , new Regex(meta.regexPattern, meta.regexArgs: _*)
             , meta.outputMessage))
@@ -122,6 +123,7 @@ object AnalyzerFactory {
      * @since 1.0
      */
     protected case class AnalyzerXmlMeta(
+        analyzerName: String,
         analyzerType: String,
         category: String,
         regexPattern: String,

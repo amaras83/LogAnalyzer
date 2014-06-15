@@ -25,7 +25,7 @@ class SimpleAnalyzerSpec extends DefaultTestSuite {
     
     "category" should "equal the value that was passed into the constructor" in {
         val analyzer = buildAnalyzer
-        analyzer.category should be("sample_test")
+        analyzer.category should be("Test Category")
     }
     
     "message" should "display a formatted output message" in {
@@ -48,5 +48,5 @@ class SimpleAnalyzerSpec extends DefaultTestSuite {
     }
     
     protected def buildAnalyzer: SimpleAnalyzer = 
-        new SimpleAnalyzer("sample_test", new Regex("""a red fox (\w+)""", "action"), "The red fox $action")
+        new SimpleAnalyzer("test-analyzer", "Test Category", new Regex("""a red fox (\w+)""", "action"), "The red fox $action")
 }

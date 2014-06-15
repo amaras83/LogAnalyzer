@@ -27,11 +27,11 @@ object ParserFactory {
     private val _parserBuffer = new ListBuffer[Parser]
     
     /**
-     * A list of analyzer categories to store bind with a given parser
+     * A list of analyzer names to store bind with a given parser
      *
      * @since 1.0
      */
-    private val _analyzerCategories = new ListBuffer[String]
+    private val _analyzerNames = new ListBuffer[String]
     
     /**
      * Create a parser from a parser type
@@ -81,7 +81,7 @@ object ParserFactory {
         _parserBuffer.clear
         (root \ "parser").foreach{ parser =>
             readAnalyzersIntoBuffer(parser)
-        
+            
             _parserBuffer.append(createFromName(
                 (parser \ "@type").text, 
                 (parser \ "@name").text, 
@@ -99,15 +99,15 @@ object ParserFactory {
      * @return a list of analyzer categories
      */
     protected def readAnalyzersIntoBuffer(root: NodeSeq): List[String] = {
-        _analyzerCategories.clear
+        _analyzerNames.clear
         (root \ "analyzer").foreach{ analyzer =>
-            _analyzerCategories.append((analyzer \ "@category").text)
+            _analyzerNames.append((analyzer \ "@name").text)
         }
-        _analyzerCategories.toList
+        _analyzerNames.toList
     }
     
     /**
-     * Build a list of analyzers matched to a list of categories
+     * Build a list of analyzers matched to a list of names
      *
      * @since  1.0
      * @param  analyzers
@@ -115,7 +115,7 @@ object ParserFactory {
      * @return List[Analyzer]
      */
     protected def buildAnalyzerList(analyzers: List[Analyzer]): List[Analyzer] =
-        analyzers.filter(x => _analyzerCategories.contains(x.category))
+        analyzers.filter(x => _analyzerNames.contains(x.name))
         
     /**
      * Checks if a string is null or empty
