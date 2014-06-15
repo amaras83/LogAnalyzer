@@ -14,9 +14,6 @@ import scala.io.Source
 import scala.xml.XML
 
 class ExportFactorySpec extends DefaultTestSuite {
-
-    val toEmail = ""
-    
     val xmlFile = "src/test/resources/fixtures/export_factory_node_seq.xml"
     
     "createFromNodeSeq" should "return a list of export defined from an XML file" in {
@@ -24,16 +21,7 @@ class ExportFactorySpec extends DefaultTestSuite {
         
         val exports = ExportFactory.createFromNodeSeq(root)
         
-        assert(1 == exports.length)
-        assert("FileExport" equals exports.head.getClass.getSimpleName)
-    }
-    
-    "createEmailExport" should "return a EmailExport class ready to an email" in {
-        val root = XML.loadFile(xmlFile)
-        
-        if (!toEmail.isEmpty) {
-            val export = ExportFactory.createEmailExport("gmail", toEmail, toEmail, "Test Subject")
-            export.send("This is some test content")
-        }
+        exports.length should be(1)
+        exports.head.getClass.getName should be ("mcross1882.loganalyzer.export.FileExport")
     }
 }

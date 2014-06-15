@@ -55,7 +55,7 @@ class Console {
      * @return key value pair of command line arguments
      */
     def build(inputArguments: Array[String]): Map[String,String] = {
-        if (inputArguments.length > _arguments.length) {
+        if (inputArguments.length != _arguments.length) {
             throw new IllegalArgumentException("Invalid amount of arguments given. See help")
         }
         extractArguments(inputArguments)
