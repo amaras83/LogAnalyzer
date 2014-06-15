@@ -8,6 +8,7 @@
 package mcross1882.loganalyzer.test
 
 import org.scalatest.{FlatSpec, Matchers}
+import org.scalatest.mock.MockitoSugar
 import org.scalamock.scalatest.MockFactory
 
 /**
@@ -19,3 +20,5 @@ import org.scalamock.scalatest.MockFactory
 trait DefaultTestSuite extends FlatSpec
     with Matchers 
     with MockFactory
+    with MockitoSugar
+    

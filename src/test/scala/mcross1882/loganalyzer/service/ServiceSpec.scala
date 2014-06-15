@@ -53,6 +53,6 @@ class ServiceSpec extends DefaultTestSuite {
     )
     
     protected def buildAnalyzers = List(
-        new SimpleAnalyzer("timestamp", new Regex("""\[(\d+-\d+-\d+)\]""", "timestamp"), "$timestamp")
+        new SimpleAnalyzer("timestamp", "timestamp", new Regex("""\[(\d+-\d+-\d+)\]""", "timestamp"), "$timestamp")
     )
 }

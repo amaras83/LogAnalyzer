@@ -34,7 +34,7 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      *
      * @since  1.0
      */
-    protected val _timestamps = analyzers.filter(x => "timestamp".equals(x.category))
+    protected val _timestamps = analyzers.filter(x => "timestamp".equals(x.name))
 
     /**
      * {@inheritdoc}

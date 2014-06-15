@@ -17,11 +17,12 @@ import scala.util.matching.Regex.Match
  *
  * @since  1.0
  * @author Matthew Cross <blacklightgfx@gmail.com>
+ * @param  n the analyzer name
  * @param  cat The category name
  * @param  pt The regex pattern
  * @param  msg The output message
  */
-class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
+class SimpleAnalyzer(n: String, cat: String, pt: Regex, msg: String) extends Analyzer {
     /**
      * Key value map for storing message and occurrences
      *
@@ -42,6 +43,11 @@ class SimpleAnalyzer(cat: String, pt: Regex, msg: String) extends Analyzer {
             case None => false
         }
     }
+    
+    /**
+     * {@inheritdoc}
+     */
+    def name: String = n
     
     /**
      * {@inheritdoc}

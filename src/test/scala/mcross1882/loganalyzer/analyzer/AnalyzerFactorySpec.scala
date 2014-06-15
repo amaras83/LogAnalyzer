@@ -13,10 +13,11 @@ import mcross1882.loganalyzer.test.DefaultTestSuite
 class AnalyzerFactorySpec extends DefaultTestSuite {
     
     "createFromName(...)" should "should return a SimpleAnalyzer if a invalid type is passed" in {
-        val analyzer = AnalyzerFactory.createFromName("badType", "sample_test", """some regex""".r, "the output message")
+        val analyzer = AnalyzerFactory.createFromName("invalid-analyzer", "badType", "Test Category", """some regex""".r, "the output message")
         
-        analyzer.category should be("sample_test")
+        analyzer.category should be("Test Category")
         analyzer.hits should be(0)
+        analyzer.getClass.getName should be("mcross1882.loganalyzer.analyzer.SimpleAnalyzer")
     }
     
     "createFromXML(...)" should "return a list of analyzers from an external XML file" in {

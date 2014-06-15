@@ -11,6 +11,7 @@ import mcross1882.loganalyzer.analyzer.SimpleAnalyzer
 import mcross1882.loganalyzer.parser.SimpleParser
 import mcross1882.loganalyzer.test.FactoryTestSuite
 import mcross1882.loganalyzer.service.ServiceFactory
+import scala.util.matching.Regex
 
 class ServiceFactorySpec extends FactoryTestSuite("src/test/resources/conf/services") {
 
@@ -41,6 +42,6 @@ class ServiceFactorySpec extends FactoryTestSuite("src/test/resources/conf/servi
     )
     
     protected def buildAnalyzers = List(
-        new SimpleAnalyzer("sample_test", """some regex""".r, "the output message")
+        new SimpleAnalyzer("test-analyzer", "Test Category", new Regex("""a red fox (\w+)""", "action"), "The red fox $action")
     )
 }

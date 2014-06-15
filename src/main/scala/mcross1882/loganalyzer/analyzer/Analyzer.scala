@@ -28,6 +28,14 @@ trait Analyzer {
     def isMatch(line: String): Boolean
     
     /**
+     * Returns the analyzer name used to match against parser imports
+     *
+     * @since  1.0
+     * @return String
+     */
+    def name: String
+    
+    /**
      * Returns the category name for this analyzer
      *
      * @since  1.0
