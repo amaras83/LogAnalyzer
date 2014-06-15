@@ -38,19 +38,23 @@ and are located in `conf/dist/analyzers`.
 
 ```xml
 <analyzers>
-    <analyzer category="Date Range" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
+    <analyzer name="timestamp" category="timestamp" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
+        $timestamp
+    </analyzer>
+    
+    <analyzer name="date-analyzer" category="Date Range" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
         Parsing records that occurred on $timestamp
     </analyzer>
     
-    <analyzer category="Emergency" regex="Emergency: (.*)" vars="message">
+    <analyzer name="emergency-analyzer" category="Emergency" regex="Emergency: (.*)" vars="message">
         - $message
     </analyzer>
     
-    <analyzer category="Failed Logins" regex="login (\w+) for (\w+@\w+.\w+)" vars="status|email">
+    <analyzer name="login-analyzer" category="Failed Logins" regex="login (\w+) for (\w+@\w+.\w+)" vars="status|email">
         $email experienced a $status login
     </analyzer>
     
-    <analyzer category="Debugging Noise" regex="Debug: (.*)">
+    <analyzer name="noise-analyzer" category="Debugging Noise" regex="Debug: (.*)">
         Suppressed
     </analyzer>
 </analyzers>
@@ -58,10 +62,10 @@ and are located in `conf/dist/analyzers`.
 
 #### Filtering on Timestamps
 
-LogAnalyzer has a great feature of being able to strip out timestamps and filter on them. This is done by using a analyzer with the category `timestamp`..
+LogAnalyzer has a great feature of being able to strip out timestamps and filter on them. This is done by using a analyzer with the name `timestamp`..
 
 ```xml
-<analyzer category="timestamp" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
+<analyzer name="timestamp" category="timestamp" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
     $timestamp
 </analyzer>
 ```
@@ -84,10 +88,11 @@ input files.
 ```xml
 <parsers>
     <parser name="DemoParser" type="SimpleParser">
-        <analyzer category="Date Range" />
-        <analyzer category="Emergency" />
-        <analyzer category="Failed Logins" />
-        <analyzer category="Debugging Noise" />
+        <analyzer name="timestamp" />
+        <analyzer name="date-analyzer" />
+        <analyzer name="emergency-analyzer" />
+        <analyzer name="login-analyzer" />
+        <analyzer name="noise-analyzer" />
     </parser>
 </parsers>
 ```
