@@ -18,14 +18,13 @@ package mcross1882.loganalyzer.parser
  */
 trait Parser {
     /**
-     * Parse a given log line
+     * Parses any related logfiles
      *
      * @since  1.0
-     * @param  line the line to parse
      * @param  dates the dates to filter on (if they exist in the line)
      * @return Unit
      */
-    def parseLine(line: String, dates: List[String]): Unit
+    def parseFiles(dates: List[String]): Unit
     
     /**
      * Return the aggregated log results as a single string

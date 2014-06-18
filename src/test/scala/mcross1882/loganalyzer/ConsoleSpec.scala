@@ -44,7 +44,7 @@ class ConsoleSpec extends DefaultTestSuite {
     protected def buildConsole: Console = {
         val console = new Console
         console
-            .argument("service", "The service to run")
-            .argument("dates", "Comma separated dates to filter on")
+            .argument("service", "The service to run", true)
+            .argument("dates", "Comma separated dates to filter on", false)
     }
 }

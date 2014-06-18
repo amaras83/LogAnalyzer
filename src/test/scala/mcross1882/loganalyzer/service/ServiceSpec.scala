@@ -44,12 +44,12 @@ class ServiceSpec extends DefaultTestSuite {
     }
     
     protected def buildService = 
-        new Service("test_service", "A Test Service", List("src/test/resources/fixtures/small-log-in.txt"), buildParsers, List(
+        new Service("test_service", "A Test Service", buildParsers, List(
             ExportFactory.createFileExport("src/test/resources/fixtures/small-log-out.txt")
         ))
             
     protected def buildParsers = List(
-        new SimpleParser("sample_parser", buildAnalyzers)
+        new SimpleParser("sample_parser", List("src/test/resources/fixtures/parser-spec.txt"), buildAnalyzers)
     )
     
     protected def buildAnalyzers = List(

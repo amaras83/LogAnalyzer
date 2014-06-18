@@ -9,6 +9,9 @@ package mcross1882.loganalyzer.parser
 
 import mcross1882.loganalyzer.analyzer.Analyzer
 import scala.collection.mutable.HashMap
+import scala.collection.mutable.ListBuffer
+import scala.io.Source
+import scala.xml.XML
 
 /**
  * SimpleParser allows you to define a parser
@@ -17,10 +20,11 @@ import scala.collection.mutable.HashMap
  *
  * @since  1.0
  * @author Matthew Cross <blacklightgfx@gmail.com>
- * @param  String n the name to reference this parser by
- * @param  List[Analyzer] analyzers
+ * @param  n the name to reference this parser by
+ * @param  files to parse
+ * @param  analyzersto use on the specified files
  */
-class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
+class SimpleParser(n: String, files: List[String], analyzers: List[Analyzer]) extends Parser {
     /**
      * Temporary storage maintaining the number of occurrences
      * a given log pattern appears
@@ -39,9 +43,9 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
     /**
      * {@inheritdoc}
      */
-    def parseLine(line: String, dates: List[String]): Unit = {
-        if (dates.isEmpty || isTimestampInRange(line, dates)) {
-            storeAnalyzerMatches(line)
+    def parseFiles(dates: List[String]) {
+        for (file <- files) {
+            parseLinesFromFiles(file, dates)
         }
     }
     
@@ -66,7 +70,36 @@ class SimpleParser(n: String, analyzers: List[Analyzer]) extends Parser {
      * {@inheritdoc}
      */
     def name: String = n
-        
+            
+    /**
+     * Opens up a source files and parses it line-by-line
+     *
+     * @since 1.0
+     * @param dates to filter on
+     */
+    protected def parseLinesFromFiles(filename: String, dates: List[String]) {
+        try {
+            Source.fromFile(filename).getLines.foreach{ line =>
+                parseLine(line, dates)
+            }
+        } catch {
+            case e: Exception => println("An error occurred while reading %s. (%s)".format(filename, e.getMessage))
+        }
+    }
+    
+    /**
+     * Parses a single line from the files
+     *
+     * @since 1.0
+     * @param line to parse
+     * @param dates to filter on
+     */
+    protected def parseLine(line: String, dates: List[String]): Unit = {
+        if (dates.isEmpty || isTimestampInRange(line, dates)) {
+            storeAnalyzerMatches(line)
+        }
+    }
+    
     /**
      * Determines if the line contains a valid timestamp. If the line
      * does contain a timestamp it will be validated against the dates array

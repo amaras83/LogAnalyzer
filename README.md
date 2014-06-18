@@ -88,13 +88,20 @@ input files.
 ```xml
 <parsers>
     <parser name="DemoParser" type="SimpleParser">
-        <analyzer name="timestamp" />
-        <analyzer name="date-analyzer" />
-        <analyzer name="emergency-analyzer" />
-        <analyzer name="login-analyzer" />
-        <analyzer name="noise-analyzer" />
+        <logfiles>
+            <logfile src="examples/sample.txt" />
+        </logfiles>
+
+        <analyzers>
+            <analyzer name="timestamp" />
+            <analyzer name="date-analyzer" />
+            <analyzer name="emergency-analyzer" />
+            <analyzer name="login-analyzer" />
+            <analyzer name="noise-analyzer" />
+        </analyzers>
     </parser>
 </parsers>
+
 ```
 
 
@@ -106,17 +113,13 @@ that should be parsed as well as a list of parsers that should be used on the in
 ```xml
 <services>
     <service name="demo" title="Demo Diagnostics Report">
-        <logfiles>
-            <file src="examples/sample.txt" />
-        </logfiles>
-        
         <parsers>
             <parser name="DemoParser" />
         </parsers>
         
         <exports>
             <file src="examples/output.txt" />
-            
+
             <email name="gmail" to="recipient@gmail.com" from="sender@gmail.com" subject="Demo Diagnostics Demo" />
         </exports>
     </service>

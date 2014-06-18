@@ -38,7 +38,7 @@ class ServiceFactorySpec extends FactoryTestSuite("src/test/resources/conf/servi
     }
     
     protected def buildParsers = List(
-        new SimpleParser("sample_parser", buildAnalyzers)
+        new SimpleParser("sample_parser", List("src/test/resources/fixtures/parser-spec.txt"), buildAnalyzers)
     )
     
     protected def buildAnalyzers = List(

@@ -51,8 +51,8 @@ object Application {
     protected def createApplicationConsole: Console = {
         val console = new Console
         console
-            .argument("service", "The service to run (demo, php, httpd, etc...)")
-            .argument("dates", "Comma separated date values to filter on (Format YYYY-MM-DD HH:mm:ss time is optional)")
+            .argument("service", "The service to run (demo, php, httpd, etc...)", true)
+            .argument("dates", "Comma separated date values to filter on (Format YYYY-MM-DD HH:mm:ss time is optional)", false)
     }
     
     /**
