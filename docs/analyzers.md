@@ -79,7 +79,7 @@ List of Requests
 /my/uri [GET, 200]: 1
 ```
 
-#### Filtering on Timestamps
+### Filtering on Timestamps
 
 LogAnalyzer has a great feature of being able to strip out timestamps and filter on them. This is done by using a analyzer with the name `timestamp`..
 
