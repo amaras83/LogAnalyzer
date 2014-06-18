@@ -60,26 +60,6 @@ and are located in `conf/dist/analyzers`.
 </analyzers>
 ```
 
-#### Filtering on Timestamps
-
-LogAnalyzer has a great feature of being able to strip out timestamps and filter on them. This is done by using a analyzer with the name `timestamp`..
-
-```xml
-<analyzer name="timestamp" category="timestamp" regex="\[(\d+-\d+-\d+) \d+\:\d+\:\d+\]" vars="timestamp">
-    $timestamp
-</analyzer>
-```
-
-The example above assumes that our log lines contain a chunk of text that may look like this...
-
-```
-[2014-05-01 04:35:11] Warning: Some info about what went wrong...
-```
-
-The LogAnalyzer would match the text `[2014-05-01 04:35:11]` and will extract `2014-05-01` as the variable `$timestamp`.
-LogAnalyzer will then use this value to perform filtering when passing in dates from the command line.
-
-
 #### Parsers
 
 Parsers are simply a collection of analyzers. They are reusable building blocks that define the types of parsing that will be done on the
@@ -101,7 +81,6 @@ input files.
         </analyzers>
     </parser>
 </parsers>
-
 ```
 
 
