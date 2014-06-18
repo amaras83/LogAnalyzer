@@ -24,7 +24,7 @@ class Console {
      * @param name the argument name
      * @param description a simple description
      */
-    protected case class Argument(name: String, description: String)
+    protected case class Argument(name: String, description: String, required: Boolean)
 
     /**
      * List buffer containing any registered arguments
@@ -40,10 +40,11 @@ class Console {
      * @param  name the argument name
      * @param  description a simple description
      * @param  value the command line value passed in
+     * @param  required argument
      * @return self
      */
-    def argument(name: String, description: String): Console = {
-        _arguments.append(new Argument(name, description))
+    def argument(name: String, description: String, required: Boolean): Console = {
+        _arguments.append(new Argument(name, description, required))
         this
     }
     
@@ -55,8 +56,8 @@ class Console {
      * @return key value pair of command line arguments
      */
     def build(inputArguments: Array[String]): Map[String,String] = {
-        if (inputArguments.length != _arguments.length) {
-            throw new IllegalArgumentException("Invalid amount of arguments given. See help")
+        if (inputArguments.length < _arguments.count(_.required)) {
+            throw new IllegalArgumentException("Not enough arguments given see help")
         }
         extractArguments(inputArguments)
     }
