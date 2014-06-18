@@ -20,35 +20,22 @@ import scala.xml.{NodeSeq, XML}
  */
 object ParserFactory {
     /**
-     * A list buffer for appending parser
-     *
-     * @since 1.0
-     */
-    private val _parserBuffer = new ListBuffer[Parser]
-    
-    /**
-     * A list of analyzer names to store bind with a given parser
-     *
-     * @since 1.0
-     */
-    private val _analyzerNames = new ListBuffer[String]
-    
-    /**
      * Create a parser from a parser type
      *
      * @since  1.0
      * @param  parserType the parser type
      * @param  name the parser name
+     * @param  files to parse
      * @param  analyzers to use bind
      * @return Parser
      */
-    def createFromName(parserType: String, name: String, analyzers: List[Analyzer]): Parser = {
+    def createFromName(parserType: String, name: String, files: List[String], analyzers: List[Analyzer]): Parser = {
         if (isIllegalString(parserType) || isIllegalString(name)) {
             throw new IllegalArgumentException("Parser type and name cannot be null or empty");
         }
         
         parserType match {
-            case _ => new SimpleParser(name, analyzers)
+            case _ => new SimpleParser(name, files, analyzers)
         }
     }
 
@@ -78,32 +65,38 @@ object ParserFactory {
      * @return a list of imported parsers
      */
     protected def readParsersIntoBuffer(root: NodeSeq, analyzers: List[Analyzer]): List[Parser] = {   
-        _parserBuffer.clear
+        var analyzerNames = List.empty[String]
+        var filenames = List.empty[String]
+        val parserBuffer = new ListBuffer[Parser]
+        
         (root \ "parser").foreach{ parser =>
-            readAnalyzersIntoBuffer(parser)
-            
-            _parserBuffer.append(createFromName(
-                (parser \ "@type").text, 
-                (parser \ "@name").text, 
-                buildAnalyzerList(analyzers)))
+            filenames = readXMLByAttribute("logfile", "@src", (parser \ "logfiles"))
+            analyzerNames = readXMLByAttribute("analyzer", "@name", (parser \ "analyzers"))
+       
+            if (!filenames.isEmpty && !analyzerNames.isEmpty) {
+                parserBuffer.append(createFromName(
+                    (parser \ "@type").text, 
+                    (parser \ "@name").text, 
+                    filenames,
+                    filterAnalyzersByName(analyzers, analyzerNames)))
+            }
         }
-        _parserBuffer.toList
+        parserBuffer.toList
     }
     
     /**
-     * Reads an xml node sequence of analyzer elements
-     * storing their respective category attributes to load later
+     * Reads the related log files into the string buffer
      *
-     * @since  1.0
-     * @param  root the xml root contains the analyzer element list
-     * @return a list of analyzer categories
+     * @since 1.0
+     * @param leafName the leaf node to traverse
+     * @param NodeSeq to traverse
      */
-    protected def readAnalyzersIntoBuffer(root: NodeSeq): List[String] = {
-        _analyzerNames.clear
-        (root \ "analyzer").foreach{ analyzer =>
-            _analyzerNames.append((analyzer \ "@name").text)
+    protected def readXMLByAttribute(leafName: String, attribute: String, root: NodeSeq): List[String] = {
+        val buffer = new ListBuffer[String]
+        (root \ leafName).foreach{ item => 
+            buffer.append((item \ attribute).text)
         }
-        _analyzerNames.toList
+        buffer.toList
     }
     
     /**
@@ -114,8 +107,8 @@ object ParserFactory {
      * @param  categories
      * @return List[Analyzer]
      */
-    protected def buildAnalyzerList(analyzers: List[Analyzer]): List[Analyzer] =
-        analyzers.filter(x => _analyzerNames.contains(x.name))
+    protected def filterAnalyzersByName(analyzers: List[Analyzer], names: List[String]): List[Analyzer] =
+        analyzers.filter(x => names.contains(x.name))
         
     /**
      * Checks if a string is null or empty

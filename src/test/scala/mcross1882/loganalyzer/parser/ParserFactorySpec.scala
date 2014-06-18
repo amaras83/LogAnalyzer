@@ -15,19 +15,19 @@ import scala.util.matching.Regex
 class ParserFactorySpec extends FactoryTestSuite("src/test/resources/conf/parsers") {
     
     "createFromName" should "should return a SimpleParser if a invalid type is passed" in {
-        val parser = ParserFactory.createFromName("badType", "sample_test", buildAnalyzers)
+        val parser = ParserFactory.createFromName("badType", "sample_test", List("src/test/resources/fixtures/parser-spec.txt"), buildAnalyzers)
         parser.name should be("sample_test")
     }
     
     it should "throw an exception if a null parserType argument is passed in" in {
         intercept[IllegalArgumentException] {
-            val parser = ParserFactory.createFromName(null, "sample_test", buildAnalyzers)
+            val parser = ParserFactory.createFromName(null, "sample_test", List("src/test/resources/fixtures/parser-spec.txt"), buildAnalyzers)
         }
     }
     
     it should "fail if a null name argument is passed in" in {
         intercept[IllegalArgumentException] {
-            val parser = ParserFactory.createFromName("badType", null, buildAnalyzers)
+            val parser = ParserFactory.createFromName("badType", null, List.empty[String], buildAnalyzers)
         }
     }
     
